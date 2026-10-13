@@ -11,7 +11,8 @@ public class Main
     {
         Console.Write("Type '1', '2' or '3' for an example program, or upload your own file.");
         // cannot be char in c#
-        string input = Console.Read().ToString();
+        string input = Console.ReadLine();
+        Console.WriteLine(input);
         if (input == "1")
         {
             program = exampleProgram1;
