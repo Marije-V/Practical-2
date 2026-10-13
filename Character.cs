@@ -5,6 +5,8 @@ namespace Practical2;
 public class Character
 {
     public string name;
+
+    // Either change to (int, int) or change the rest to Vector2
     public Vector2 position;
     public Direction direction;
 
@@ -15,7 +17,7 @@ public class Character
         direction = Direction.East;
     }
 
-    public Character(string name, (Int, Int) pos, Direction d)
+    public Character(string name, Vector2 pos, Direction d)
     {
         this.name = name;
         position = pos;

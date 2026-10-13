@@ -14,7 +14,7 @@ class Move : ICommand
     }
     public void executeCommand(Character character)
     {
-        (int x, int y) = character.position;
+        (int x, int y) = ((int)character.position.X, (int)character.position.Y);
         if (character.direction == Direction.North) y -= steps;
         if (character.direction == Direction.East) x += steps;
         if (character.direction == Direction.South) y += steps;

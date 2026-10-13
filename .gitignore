@@ -1,0 +1,17 @@
+# .NET build output
+[Bb]in/
+[Oo]bj/
+
+# Local Visual Studio settings
+.vs/
+*.user
+*.suo
+*.sln.docstates
+
+# Test results and coverage
+TestResults/
+coverage/
+
+# OS files
+.DS_Store
+Thumbs.db

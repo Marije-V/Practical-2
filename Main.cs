@@ -10,16 +10,17 @@ public class Main
     public void main()
     {
         Console.Write("Type '1', '2' or '3' for an example program, or upload your own file.");
-        char? input = Console.Read;
-        if (input == '1')
+        // cannot be char in c#
+        string input = Console.Read().ToString();
+        if (input == "1")
         {
             program = exampleProgram1;
         }
-        if (input == '2')
+        if (input == "2")
         {
             program = exampleProgram2;
         }
-        if (input == '3')
+        if (input == "3")
         {
             program = exampleProgram3;
         }
