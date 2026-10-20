@@ -29,7 +29,7 @@ public class ExampleLoader
                 })
             }),
             // Example 3
-            new Program("Example3", new List<ICommand>
+            new Program("Random", new List<ICommand>
             {
                 new Move(5),
                 new Turn(TurnDirection.Left),
@@ -53,6 +53,6 @@ public class ExampleLoader
     public Program GetRandomExample()
     {
         var rand = new Random();
-        return programs[rand.Next(0, programs.Count - 1)];
+        return programs[rand.Next(0, programs.Count)];
     }
 }
