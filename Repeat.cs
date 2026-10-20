@@ -1,4 +1,3 @@
-using System.Windows.Input;
 namespace Practical2;
 
 public class Repeat : ICommand, IHasChildren
@@ -14,9 +13,12 @@ public class Repeat : ICommand, IHasChildren
 
     public void Execute(Character character)
     {
-        foreach (ICommand command in commands)
+        for (int t = 0; t < times; t++)
         {
-            command.Execute(character);
+            foreach (ICommand command in commands)
+            {
+                command.Execute(character);
+            }
         }
     }
 

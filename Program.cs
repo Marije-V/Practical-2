@@ -11,9 +11,10 @@ public class Program
 
     public void Execute()
     {
+        Character c = new Character();
         foreach (ICommand command in commands)
         {
-            command.Execute(new Character());
+            command.Execute(c);
         }
     }
 
