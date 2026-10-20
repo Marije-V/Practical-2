@@ -33,12 +33,12 @@ public class TxtParser : IProgramParser
             // Skip White spaces
             if (string.IsNullOrWhiteSpace(currentLine))
             {
+                currentLine = reader.ReadLine();
                 continue;
             }
 
             // calculate the current indention
             int level = currentLine.TakeWhile(char.IsWhiteSpace).Count();
-
             if (level % 4 != 0)
             {
                 throw new Exception("The indentation in this file should be 4 spaces.");
@@ -48,7 +48,7 @@ public class TxtParser : IProgramParser
 
             if (level < indent)
             {
-                return commands;
+                break;
             }
 
 
@@ -62,12 +62,13 @@ public class TxtParser : IProgramParser
                     commands.Add(new Move(int.Parse(words[1])));
                     break;
                 case "Turn":
-                    commands.Add(new Turn(TurnDirection.Left));
+                    TurnDirection turn = words[1] == "left" ? TurnDirection.Left : TurnDirection.Right;
+                    commands.Add(new Turn(turn));
                     break;
                 case "Repeat":
                     commands.Add(
                         new Repeat(int.Parse(words[1]),
-                        ParseBlock(indent++))
+                        ParseBlock(indent + 1))
                     );
                     break;
                 default:

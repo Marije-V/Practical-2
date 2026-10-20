@@ -25,22 +25,22 @@ public static class MetricsCalculator
 
     private static Metrics Traverse(List<ICommand> commands, int depth)
     {
-        int c = 0;
-        int r = 0;
-        int n = depth;
+        int com = 0;
+        int repeats = 0;
+        int nesting = depth;
         Metrics temp;
         foreach (ICommand command in commands)
         {
-            c++;
+            com++;
             if (command is IHasChildren hasChildren)
             {
-                r++;
+                repeats++;
                 temp = Traverse(hasChildren.GetChildren(), depth + 1);
-                c += temp.CommandCount;
-                r += temp.RepeatCount;
-                if (n < temp.MaxNestingLevel) n = temp.MaxNestingLevel;
+                com += temp.CommandCount;
+                repeats += temp.RepeatCount;
+                if (nesting < temp.MaxNestingLevel) nesting = temp.MaxNestingLevel;
             }
         }
-        return new Metrics(c, r, n);
+        return new Metrics(com, repeats, nesting);
     }
 }
