@@ -5,4 +5,8 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <StartingObject>Application</StartingObject>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="TestProject1\**\*.cs" />
+  </ItemGroup>
 </Project>
