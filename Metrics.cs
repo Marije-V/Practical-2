@@ -1,6 +1,6 @@
 namespace Practical2;
 
-public class Metrics
+public struct Metrics
 {
     public int CommandCount, RepeatCount, MaxNestingLevel;
 
