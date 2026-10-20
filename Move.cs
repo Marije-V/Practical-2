@@ -1,6 +1,4 @@
-namespace Practical2;
-
-class Move : ICommand
+public class Move : ICommand
 {
     private int steps;
 
@@ -8,13 +6,10 @@ class Move : ICommand
     {
         this.steps = steps;
     }
-    public string ToString()
+
+    public void Execute(Character character)
     {
-        return $"Move {steps}";
-    }
-    public void executeCommand(Character character)
-    {
-        (int x, int y) = ((int)character.position.X, (int)character.position.Y);
+        (int x, int y) = (character.x, character.y);
         if (character.direction == Direction.North) y -= steps;
         if (character.direction == Direction.East) x += steps;
         if (character.direction == Direction.South) y += steps;

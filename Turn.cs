@@ -1,25 +1,20 @@
-namespace Practical2;
-
-class Turn : ICommand
+public class Turn : ICommand
 {
-    private TurnType way;
+    private TurnDirection turnDirection;
 
-    public Turn(TurnType way)
+    public Turn(TurnDirection d)
     {
-        this.way = way;
+        turnDirection = d;
     }
-    public String ToString()
+
+    public void Execute(Character character)
     {
-        return $"Turn {way}";
-    }
-    public void executeCommand(Character character)
-    {
-        if (way == TurnType.Right) character.direction++;
-        if (way == TurnType.Left) character.direction--;
+        if (turnDirection == TurnDirection.Right) character.direction++;
+        if (turnDirection == TurnDirection.Left) character.direction--;
     }
 }
 
-enum TurnType
+public enum TurnDirection
 {
     Left,
     Right

@@ -1,10 +1,9 @@
-using Practical2;
-
 public class Application
 {
     public static void Main(string[] args)
     {
-        Practical2.Main app = new Practical2.Main();
-        app.main();
+        Console.Write("Type '0', '1' or '2' for an example program, or upload your own file.");
+        string input = Console.ReadLine();
+
     }
 }
