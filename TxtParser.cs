@@ -9,7 +9,8 @@ public class TxtParser : IProgramParser
 
     public bool CanParse(string filepath)
     {
-        return false;
+        string extension = filepath.Split('.').Last();
+        return extension == "txt";
     }
 
     public Program Parse(string content)
