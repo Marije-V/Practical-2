@@ -14,10 +14,12 @@ public class Application
         if (input == "e")
         {
             program = ex.GetRandomExample();
+            Console.WriteLine($"Random selection gave you program: {program.name}.");
         }
         else
         {
-            program = FileImporter.Import(input);
+            FileImporter importer = new FileImporter();
+            program = importer.Import(input);
         }
 
         // choosing executing or calculating metrics:
@@ -38,12 +40,14 @@ public class Application
         }
         else if (input == "m")
         {
-            //TODO formatting mooi maken met aantal whitespaces toevoegen enzo
             metrics = MetricsCalculator.Calculate(program);
-            Console.WriteLine("+----------+-------+");
-            Console.WriteLine("|Metrics:  |Amount:|");
-            Console.WriteLine("+----------+-------+");
-            Console.WriteLine($"|Commands  |{metrics.CommandCount}     |");
+            Console.WriteLine("+----------+--------+");
+            Console.WriteLine("|Metrics:  |Amount: |");
+            Console.WriteLine("+----------+--------+");
+            Console.WriteLine($"|Commands  |{metrics.CommandCount}");
+            Console.WriteLine($"|Repeats   |{metrics.RepeatCount}");
+            Console.WriteLine($"|Nesting   |{metrics.MaxNestingLevel}");
+
         }
         else
         {

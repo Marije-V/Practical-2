@@ -2,7 +2,7 @@ namespace Practical2;
 
 public class Program
 {
-    private string name;
+    public string name;
     private List<ICommand> commands;
     public Program(string name, List<ICommand> commands)
     {

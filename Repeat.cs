@@ -22,7 +22,7 @@ public class Repeat : ICommand, IHasChildren
         }
     }
 
-    public IReadOnlyList<ICommand> GetChildren()
+    public List<ICommand> GetChildren()
     {
         return commands;
     }

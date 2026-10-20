@@ -34,7 +34,7 @@ public class Character
         if (turnDirection == TurnDirection.Left) facing--;
         if (turnDirection == TurnDirection.Right) facing++;
         // TODO check if this works or do we need to do if .. then "left" etc.?
-        trace.Add($"Turn {turnDirection}");
+        trace.Add($"Turn {turnDirection.ToString()}");
     }
 
     public IReadOnlyList<string> GetTrace()
@@ -49,6 +49,7 @@ public class Character
 
     public string DirectionToString()
     {
+        // TODO check if this indeed gives back a string like 'North'
         return facing.ToString();
     }
 }
