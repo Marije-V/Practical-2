@@ -14,7 +14,7 @@ public class Application
         if (input == "e")
         {
             program = ex.GetRandomExample();
-            Console.WriteLine($"Random selection gave you program: {program.name}");
+            Console.WriteLine($"Random selection gave you program: {program.name}.");
         }
         else
         {

@@ -6,8 +6,7 @@ public class FileImporter
 
     public FileImporter()
     {
-        parsers = new List<IProgramParser>();
-        parsers.Add(new TxtParser());
+        parsers = [new TxtParser()];
     }
     public FileImporter(List<IProgramParser> parsers)
     {

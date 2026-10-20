@@ -2,7 +2,7 @@ namespace Practical2;
 
 public class ExampleLoader
 {
-    List<Program> programs;
+    private List<Program> programs;
     public ExampleLoader()
     {
         programs = new List<Program>
