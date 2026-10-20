@@ -1,5 +1,8 @@
+namespace Practical2;
+
 public class Program
 {
+    private string name;
     private List<ICommand> commands;
     public Program(List<ICommand> commands)
     {
@@ -10,7 +13,7 @@ public class Program
     {
         foreach (ICommand command in commands)
         {
-            command.executeCommand(character);
+            command.Execute(new Character());
         }
     }
 

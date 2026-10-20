@@ -1,4 +1,6 @@
-interface IHasChildren
+namespace Practical2;
+
+public interface IHasChildren
 {
-    IReadOnlyList<ICommand> GetChildren();
+    public IReadOnlyList<ICommand> GetChildren();
 }

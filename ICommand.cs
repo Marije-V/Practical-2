@@ -1,4 +1,6 @@
-interface ICommand
+namespace Practical2;
+
+public interface ICommand
 {
-    void Execute(Character character);
+    public void Execute(Character character);
 }

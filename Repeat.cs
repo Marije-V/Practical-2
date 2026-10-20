@@ -1,4 +1,5 @@
 using System.Windows.Input;
+namespace Practical2;
 
 public class Repeat : ICommand, IHasChildren
 {
@@ -15,7 +16,7 @@ public class Repeat : ICommand, IHasChildren
     {
         foreach (ICommand command in commands)
         {
-            command.execute(character);
+            command.Execute(character);
         }
     }
 

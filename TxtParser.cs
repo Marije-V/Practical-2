@@ -1,3 +1,5 @@
+namespace Practical2;
+
 public class TxtParser : IProgramParser
 {
     public TxtParser()
@@ -12,6 +14,6 @@ public class TxtParser : IProgramParser
 
     public Program Parse(string content)
     {
-        return new Program();
+        return new Program(new List<ICommand>());
     }
 }

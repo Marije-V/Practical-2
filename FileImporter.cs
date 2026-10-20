@@ -1,3 +1,5 @@
+namespace Practical2;
+
 public class FileImporter
 {
     List<IProgramParser> parsers;

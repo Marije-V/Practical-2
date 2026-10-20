@@ -1,3 +1,5 @@
+namespace Practical2;
+
 public class Turn : ICommand
 {
     private TurnDirection turnDirection;
@@ -9,8 +11,6 @@ public class Turn : ICommand
 
     public void Execute(Character character)
     {
-        if (turnDirection == TurnDirection.Right) character.direction++;
-        if (turnDirection == TurnDirection.Left) character.direction--;
     }
 }
 

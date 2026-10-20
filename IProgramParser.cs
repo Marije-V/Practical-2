@@ -1,5 +1,7 @@
-interface IProgramParser
+namespace Practical2;
+
+public interface IProgramParser
 {
-    bool canParse(string extension);
-    Program Parse(string content);
+    public bool CanParse(string extension);
+    public Program Parse(string content);
 }

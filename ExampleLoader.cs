@@ -1,3 +1,5 @@
+namespace Practical2;
+
 public class ExampleLoader
 {
     List<Program> programs;
@@ -5,9 +7,9 @@ public class ExampleLoader
     {
         // TODO fill these with example programs (hardcoded)
         programs = new List<Program> {
-            new Program(),
-            new Program(),
-            new Program()};
+            new Program(new List<ICommand> ()),
+            new Program(new List<ICommand> ()),
+            new Program(new List<ICommand> ())};
     }
 
     public Program GetRandomExample()

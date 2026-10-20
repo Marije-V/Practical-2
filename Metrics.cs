@@ -1,3 +1,5 @@
+namespace Practical2;
+
 public class Metrics
 {
     public int CommandCount, RepeatCount, MaxNestingLevel;

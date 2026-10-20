@@ -1,3 +1,5 @@
+namespace Practical2;
+
 public static class MetricsCalculator
 {
     public static Metrics Calculate()
