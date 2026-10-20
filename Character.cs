@@ -41,6 +41,16 @@ public class Character
     {
         return trace;
     }
+
+    public string PositionToString()
+    {
+        return $"({x}, {y})";
+    }
+
+    public string DirectionToString()
+    {
+        return facing.ToString();
+    }
 }
 
 public enum Direction
