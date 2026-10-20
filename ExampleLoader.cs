@@ -46,6 +46,52 @@ public class ExampleLoader
                     })
                 }),
                 new Turn(TurnDirection.Left)
+            }),
+            // Example 4
+            new Program("Heart", new List<ICommand>
+            {
+                new Repeat(2, new List<ICommand>
+                {
+                    new Turn(TurnDirection.Left),
+                    new Move(1),
+                    new Turn(TurnDirection.Right),
+                    new Move(1)
+                }),
+                new Turn(TurnDirection.Right),
+                new Move(1),
+                new Turn(TurnDirection.Left),
+                new Move(1),
+                new Turn(TurnDirection.Right),
+                new Move(2),
+                new Repeat(3, new List<ICommand>
+                {
+                    new Turn(TurnDirection.Right),
+                    new Move(1),
+                    new Turn(TurnDirection.Left),
+                    new Move(1)
+                }),
+                new Turn(TurnDirection.Right),
+                new Repeat(3, new List<ICommand>
+                {
+                    new Turn(TurnDirection.Right),
+                    new Move(1),
+                    new Turn(TurnDirection.Left),
+                    new Move(1)
+                }),
+                new Turn(TurnDirection.Right),
+                new Move(2),
+                new Turn(TurnDirection.Right),
+                new Move(1),
+                new Turn(TurnDirection.Left),
+                new Move(1),
+                new Turn(TurnDirection.Right),
+                new Repeat(2, new List<ICommand>
+                {
+                    new Move(1),
+                    new Turn(TurnDirection.Right),
+                    new Move(1),
+                    new Turn(TurnDirection.Left),
+                })
             })
         };
     }
