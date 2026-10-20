@@ -9,7 +9,7 @@ public class Application
         Metrics metrics;
 
         // choosing a program:
-        Console.Write("Type 'e' for a random example program, or upload your own file by typing the filepath");
+        Console.Write("Type 'e' for a random example program, or upload your own file by typing the filepath: ");
         string input = Console.ReadLine();
         if (input == "e")
         {
@@ -23,7 +23,7 @@ public class Application
         }
 
         // choosing executing or calculating metrics:
-        Console.Write("Type 'e' if you want to execute, and 'm' if you want to calculate the metrics of this program");
+        Console.Write("Type 'e' if you want to execute, and 'm' if you want to calculate the metrics of this program: ");
         input = Console.ReadLine();
         if (input == "e")
         {
@@ -34,19 +34,19 @@ public class Application
                 Console.Write(trace[t]);
                 Console.Write(", ");
             }
-            Console.Write(trace);
+            Console.Write(trace.Last());
             Console.WriteLine(".");
             Console.WriteLine($"End state: {c.PositionToString()} facing {c.DirectionToString()}.");
         }
         else if (input == "m")
         {
             metrics = MetricsCalculator.Calculate(program);
-            Console.WriteLine("+----------+--------+");
-            Console.WriteLine("|Metrics:  |Amount: |");
-            Console.WriteLine("+----------+--------+");
-            Console.WriteLine($"|Commands  |{metrics.CommandCount}");
-            Console.WriteLine($"|Repeats   |{metrics.RepeatCount}");
-            Console.WriteLine($"|Nesting   |{metrics.MaxNestingLevel}");
+            Console.WriteLine("----------+--------");
+            Console.WriteLine("Metrics:  |Amount:");
+            Console.WriteLine("----------+--------");
+            Console.WriteLine($"Commands  |{metrics.CommandCount}");
+            Console.WriteLine($"Repeats   |{metrics.RepeatCount}");
+            Console.WriteLine($"Nesting   |{metrics.MaxNestingLevel}");
 
         }
         else

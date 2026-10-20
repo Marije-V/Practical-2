@@ -4,7 +4,7 @@ public class Character
 {
     private int x, y;
     private Direction facing;
-    private List<string> trace;
+    private List<string> trace = new List<string>();
 
     public Character()
     {
@@ -22,19 +22,31 @@ public class Character
 
     public void MoveForward(int steps)
     {
-        if (facing == Direction.North) y += steps;
+        if (facing == Direction.North) y -= steps;
         if (facing == Direction.East) x += steps;
-        if (facing == Direction.South) y -= steps;
+        if (facing == Direction.South) y += steps;
         if (facing == Direction.West) x -= steps;
         trace.Add($"Move {steps}");
     }
 
     public void Turn(TurnDirection turnDirection)
     {
-        if (turnDirection == TurnDirection.Left) facing--;
-        if (turnDirection == TurnDirection.Right) facing++;
-        // TODO check if this works or do we need to do if .. then "left" etc.?
-        trace.Add($"Turn {turnDirection.ToString()}");
+        Direction rightNow = facing;
+        if (turnDirection == TurnDirection.Left)
+        {
+            if (rightNow == Direction.North) facing = Direction.West;
+            if (rightNow == Direction.East) facing = Direction.North;
+            if (rightNow == Direction.South) facing = Direction.East;
+            if (rightNow == Direction.West) facing = Direction.South;
+        }
+        if (turnDirection == TurnDirection.Right)
+        {
+            if (rightNow == Direction.North) facing = Direction.East;
+            if (rightNow == Direction.East) facing = Direction.South;
+            if (rightNow == Direction.South) facing = Direction.West;
+            if (rightNow == Direction.West) facing = Direction.North;
+        }
+        trace.Add($"Turn {turnDirection}");
     }
 
     public IReadOnlyList<string> GetTrace()
@@ -49,8 +61,7 @@ public class Character
 
     public string DirectionToString()
     {
-        // TODO check if this indeed gives back a string like 'North'
-        return facing.ToString();
+        return $"{facing}";
     }
 }
 

@@ -30,12 +30,13 @@ public class FileImporter
             }
 
             StreamReader fileReader = new StreamReader(path);
-            List<ICommand> commands = parser.Parse(fileReader);
-            return new Program(Path.GetFileNameWithoutExtension(path), commands);
+
+            string nameWithSuffix = path.Split('/').Last();
+            return new Program(nameWithSuffix.Split('.')[0], parser.Parse(fileReader));
         }
 
-        string nameWithSuffix = path.Split('/').Last();
-        return new Program(nameWithSuffix.Split('.')[0], new List<ICommand>());
+        throw new Exception("We cannot parse this filetype");
+
     }
 
 }
