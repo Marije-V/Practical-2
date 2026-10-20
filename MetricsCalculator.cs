@@ -11,11 +11,11 @@ public static class MetricsCalculator
         Metrics temp;
         foreach (ICommand c in program.GetCommands())
         {
-            if (c.GetType() == typeof(IHasChildren))
+            if (c is IHasChildren hasChildren)
             {
                 repeats++;
                 nesting++;
-                temp = Traverse((IHasChildren)c.GetChildren(), 1);
+                temp = Traverse(hasChildren.GetChildren(), 1);
                 commands += temp.CommandCount;
                 repeats += temp.RepeatCount;
                 nesting = temp.MaxNestingLevel + 1; // TODO???
