@@ -2,7 +2,7 @@ namespace Practical2;
 
 public class FileImporter
 {
-    List<IProgramParser> parsers;
+    private List<IProgramParser> parsers;
 
     public FileImporter()
     {
@@ -13,6 +13,30 @@ public class FileImporter
     {
         this.parsers = parsers;
     }
+    public Program Import(string path)
+    {
+        //check whether the file exists
+        if (!File.Exists(path))
+        {
+            Console.Error.WriteLine("Filepath does not exist");
+        }
 
+        foreach (IProgramParser parser in parsers)
+        {
+            string extension = path.Split('.').Last();
+
+            if (parser.CanParse(extension) == false)
+            {
+                continue;
+            }
+
+            StreamReader fileReader = new StreamReader(path);
+
+            return parser.Parse(fileReader);
+        }
+
+        return new Program(new List<ICommand>());
+
+    }
 
 }
