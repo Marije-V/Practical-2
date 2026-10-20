@@ -11,6 +11,7 @@ public class Turn : ICommand
 
     public void Execute(Character character)
     {
+        character.Turn(turnDirection);
     }
 }
 
