@@ -35,8 +35,8 @@ public class FileImporter
             return parser.Parse(fileReader);
         }
 
-        return new Program(new List<ICommand>());
-
+        string nameWithSuffix = path.Split('/').Last();
+        return new Program(nameWithSuffix.Split('.')[0], new List<ICommand>());
     }
 
 }
