@@ -10,6 +10,7 @@ public class Program
         this.commands = commands;
     }
 
+    // Loop through all the commands and execute it with a fresh character
     public Character Execute()
     {
         Character c = new Character();
@@ -20,6 +21,7 @@ public class Program
         return c;
     }
 
+    // Return the list of commands
     public IReadOnlyList<ICommand> GetCommands()
     {
         return commands;

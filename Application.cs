@@ -13,11 +13,13 @@ public class Application
         string input = Console.ReadLine();
         if (input == "e")
         {
+            // Get a random example program
             program = ex.GetRandomExample();
             Console.WriteLine($"Random selection gave you program: {program.name}.");
         }
         else
         {
+            // Get the file from a certain filepath
             FileImporter importer = new FileImporter();
             program = importer.Import(input);
         }
@@ -27,6 +29,7 @@ public class Application
         input = Console.ReadLine();
         if (input == "e")
         {
+            // execute the program you have selected
             Character c = program.Execute();
             IReadOnlyList<string> trace = c.GetTrace();
             for (int t = 0; t < trace.Count - 1; t++)
@@ -40,6 +43,7 @@ public class Application
         }
         else if (input == "m")
         {
+            // Calculate the metrics for the program
             metrics = MetricsCalculator.Calculate(program);
             Console.WriteLine("----------+--------");
             Console.WriteLine("Metrics:  |Amount:");
@@ -51,6 +55,7 @@ public class Application
         }
         else
         {
+            // When not giving the correct input
             Console.WriteLine("Wow! You're so funny! However, we asked you to either type 'e' or 'm'.");
             Console.WriteLine("Congratulations. You broke the program.");
             Console.WriteLine(">:(");

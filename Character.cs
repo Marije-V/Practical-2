@@ -29,6 +29,7 @@ public class Character
         trace.Add($"Move {steps}");
     }
 
+    // Change the enum direction depending on the turn and the compass direction
     public void Turn(TurnDirection turnDirection)
     {
         Direction rightNow = facing;

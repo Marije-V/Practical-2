@@ -11,6 +11,7 @@ public class Repeat : ICommand, IHasChildren
         this.commands = commands;
     }
 
+    // Execute the commands inside of the repeat function
     public void Execute(Character character)
     {
         for (int t = 0; t < times; t++)
