@@ -1,4 +1,3 @@
-using System.Text;
 using Practical2;
 
 namespace TestProject1;

@@ -17,7 +17,7 @@ public class FileImporter
         //check whether the file exists
         if (!File.Exists(path))
         {
-            Console.Error.WriteLine("Filepath does not exist");
+            throw new Exception("Filepath does not exist");
         }
 
         foreach (IProgramParser parser in parsers)
@@ -31,8 +31,8 @@ public class FileImporter
 
             StreamReader fileReader = new StreamReader(path);
 
-            string nameWithSuffix = path.Split('/').Last();
-            return new Program(nameWithSuffix.Split('.')[0], parser.Parse(fileReader));
+            string name = Path.GetFileNameWithoutExtension(path);
+            return new Program(name, parser.Parse(fileReader));
         }
 
         throw new Exception("We cannot parse this filetype");

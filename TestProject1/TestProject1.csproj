@@ -21,5 +21,8 @@
   <ItemGroup>
     <ProjectReference Include="..\Practical2.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <None Update="Test.txt" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
 
 </Project>
