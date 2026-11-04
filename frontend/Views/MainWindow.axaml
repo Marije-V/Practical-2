@@ -32,6 +32,9 @@
             <TextBox Grid.Row="1" Grid.Column="1" Margin="0 5" Text="0"/>
         </Grid>
         <Button HorizontalAlignment="Center" VerticalAlignment="Center" Click="Button_OnClick">Random Example Program!</Button>
+        <Image Width="200" Height="200"
+               Stretch="Uniform"
+               Source="../Assets/CodyTopview.png"/>
     </StackPanel>
 
 </Window>
