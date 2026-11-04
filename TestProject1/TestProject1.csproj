@@ -19,7 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Practical2.csproj" />
+    <ProjectReference Include="..\backend\Practical2.csproj" />
   </ItemGroup>
   <ItemGroup>
     <None Update="Test.txt" CopyToOutputDirectory="PreserveNewest" />
