@@ -2,12 +2,19 @@ namespace Practical2;
 
 public class Application
 {
+    private Program mainProgram;
+    private ExampleLoader exampleLoader = new ExampleLoader();
+
+    public Application()
+    {
+        mainProgram = new Program("empty", []);
+    }
+
     public static void Main(string[] args)
     {
-        ExampleLoader ex = new ExampleLoader();
         Program program;
+        ExampleLoader ex = new ExampleLoader();
         Metrics metrics;
-
         // choosing a program:
         Console.Write("Type 'e' for a random example program, or upload your own file by typing the filepath: ");
         string input = Console.ReadLine();
@@ -60,5 +67,55 @@ public class Application
             Console.WriteLine("Congratulations. You broke the program.");
             Console.WriteLine(">:(");
         }
+    }
+
+    public void LoadBasicExampleProgram()
+    {
+        mainProgram = exampleLoader.GetRandomExampleByDifficulty(Difficulty.Basic);
+    }
+
+    public void LoadAdvancedExampleProgram()
+    {
+        mainProgram = exampleLoader.GetRandomExampleByDifficulty(Difficulty.Advanced);
+    }
+
+    public void LoadExpertExampleProgram()
+    {
+        mainProgram = exampleLoader.GetRandomExampleByDifficulty(Difficulty.Expert);
+    }
+
+    public void LoadProgramFromFile()
+    {
+        // let this function take a filepath as argument?
+        FileImporter importer = new FileImporter();
+    }
+
+    public void Run()
+    {
+        // execute the main program
+        Character c = mainProgram.Execute();
+        // trace:
+        // let this function return the textual trace
+        IReadOnlyList<string> trace = c.GetTrace();
+        for (int t = 0; t < trace.Count - 1; t++)
+        {
+            Console.Write(trace[t]);
+            Console.Write(", ");
+        }
+        Console.Write(trace.Last());
+        Console.WriteLine(".");
+        Console.WriteLine($"End state: {c.PositionToString()} facing {c.DirectionToString()}.");
+    }
+
+    public void CalculateMetrics()
+    {
+        Metrics metricsMainProgram;
+        metricsMainProgram = MetricsCalculator.Calculate(mainProgram);
+        Console.WriteLine("----------+--------");
+        Console.WriteLine("Metrics:  |Amount:");
+        Console.WriteLine("----------+--------");
+        Console.WriteLine($"Commands  |{metricsMainProgram.CommandCount}");
+        Console.WriteLine($"Repeats   |{metricsMainProgram.RepeatCount}");
+        Console.WriteLine($"Nesting   |{metricsMainProgram.MaxNestingLevel}");
     }
 }

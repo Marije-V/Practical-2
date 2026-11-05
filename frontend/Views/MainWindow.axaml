@@ -7,7 +7,9 @@
         x:Class="Cody.Views.MainWindow"
         x:DataType="vm:MainViewModel"
         Icon="/Assets/avalonia-logo.ico"
-        Title="Cody">
+        Title="Cody"
+        Width="1200"
+        Height="800">
 
     <Design.DataContext>
         <!-- This only sets the DataContext for the previewer in an IDE,
@@ -15,26 +17,55 @@
         <vm:MainViewModel />
     </Design.DataContext>
 
-    <StackPanel>
-        <Border Margin="5" CornerRadius="10" Background="LightBlue">
-            <TextBlock Margin="5"
-                       FontSize="24"
-                       HorizontalAlignment="Center"
-                       Text="Temperature Converter" />
-
-        </Border>
-        <Grid ShowGridLines="True" Margin="5"
-              ColumnDefinitions="120, 100"
-              RowDefinitions="Auto, Auto">
-            <TextBlock Grid.Row="0" Grid.Column="0" Margin="10">Celsius</TextBlock>
-            <TextBox Grid.Row="0" Grid.Column="1" Margin="0 5" Text="0"/>
-            <TextBlock Grid.Row="1" Grid.Column="0" Margin="10">Fahrenheit</TextBlock>
-            <TextBox Grid.Row="1" Grid.Column="1" Margin="0 5" Text="0"/>
-        </Grid>
-        <Button HorizontalAlignment="Center" VerticalAlignment="Center" Click="Button_OnClick">Random Example Program!</Button>
-        <Image Width="200" Height="200"
-               Stretch="Uniform"
-               Source="../Assets/CodyTopview.png"/>
+    <StackPanel Orientation="Horizontal">
+        <StackPanel Orientation="Vertical" Width="800">
+            <SplitButton Content="Load Program">
+                <SplitButton.Flyout>
+                    <MenuFlyout Placement="Bottom">
+                        <MenuItem Header="Load Example">
+                            <MenuItem Header="Basic" Command="{Binding LoadBasicExampleProgram}"/>
+                            <MenuItem Header="Advanced" Command="{Binding LoadAdvancedExampleProgram}"/>
+                            <MenuItem Header="Expert" Command="{Binding LoadExpertExampleProgram}"/>
+                        </MenuItem>
+                        <MenuItem Header="Load from file" Command="{Binding LoadProgramFromFile}"/>
+                    </MenuFlyout>
+                </SplitButton.Flyout>
+            </SplitButton>
+            <TextBox Width="700" Height="600" AcceptsReturn="True" AcceptsTab="True" Text="{Binding ProgramText}"></TextBox>
+            <StackPanel Orientation="Horizontal">
+                <Button Command="{Binding Run}">Run</Button>
+                <Button Command="{Binding CalculateMetrics}">Calculate Metrics</Button>
+            </StackPanel>
+        </StackPanel>
+        <StackPanel Orientation="Vertical" Width="400">
+            <TextBlock>Draw a visualized grid of a program here somehow...</TextBlock>
+            <Image Width="350" Height="350"
+                   Stretch="Uniform"
+                   Source="../Assets/CodyTopview.png"/>
+            <TextBlock Width="350" Height="420" Text="{Binding OutputText}"></TextBlock>
+        </StackPanel>
     </StackPanel>
+
+    <!-- <StackPanel Orientation="Horizontal" >
+    <Border Margin="5" CornerRadius="10" Background="LightBlue">
+    <TextBlock Margin="5"
+    FontSize="24"
+    HorizontalAlignment="Center"
+    Text="Temperature Converter" />
+
+    </Border>
+    <Grid ShowGridLines="True" Margin="5"
+    ColumnDefinitions="120, 100"
+    RowDefinitions="Auto, Auto">
+    <TextBlock Grid.Row="0" Grid.Column="0" Margin="10">Celsius</TextBlock>
+    <TextBox Grid.Row="0" Grid.Column="1" Margin="0 5" Text="0"/>
+    <TextBlock Grid.Row="1" Grid.Column="0" Margin="10">Fahrenheit</TextBlock>
+    <TextBox Grid.Row="1" Grid.Column="1" Margin="0 5" Text="0"/>
+    </Grid>
+    <Button HorizontalAlignment="Center" VerticalAlignment="Center" Click="Button_OnClick">Random Example Program!</Button>
+    <Image Width="200" Height="200"
+    Stretch="Uniform"
+    Source="../Assets/CodyTopview.png"/>
+    </StackPanel> -->
 
 </Window>
