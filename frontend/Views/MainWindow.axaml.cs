@@ -24,7 +24,7 @@ public partial class MainWindow : Window
         application.TryParse(text);
 
         // show textual trace in output-textblock
-        OutputTextBlock.Text = application.Run();
+        OutputTextBlock.Text += "\n" + application.Run();
 
         // TODO show visual trace in grid
     }
@@ -38,7 +38,7 @@ public partial class MainWindow : Window
         application.TryParse(text);
 
         // calculate the metrics so we can display them in the textblock output
-        OutputTextBlock.Text = application.CalculateMetrics();
+        OutputTextBlock.Text += "\n" + application.CalculateMetrics();
     }
 
     private void LoadBasicExampleProgram(object? sender, RoutedEventArgs e)
