@@ -27,4 +27,9 @@ public class Repeat : ICommand, IHasChildren
     {
         return commands;
     }
+
+    public override string ToString()
+    {
+        return $"Repeat {times}";
+    }
 }

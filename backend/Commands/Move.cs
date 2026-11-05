@@ -13,4 +13,9 @@ public class Move : ICommand
     {
         character.MoveForward(steps);
     }
+
+    public override string ToString()
+    {
+        return $"Move {steps}";
+    }
 }

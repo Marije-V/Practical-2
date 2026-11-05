@@ -26,4 +26,40 @@ public class Program
     {
         return commands;
     }
+
+    public override string ToString()
+    {
+        string result = "";
+        foreach (ICommand c in commands)
+        {
+            if (c is IHasChildren hasChildren)
+            {
+                result += c.ToString() + "\n";
+                result += ToStringHelper(1, hasChildren.GetChildren());
+            }
+            else
+            {
+                result += c.ToString() + "\n";
+            }
+        }
+        return result;
+    }
+
+    private string ToStringHelper(int indentation, List<ICommand> children)
+    {
+        string result = "";
+        foreach (ICommand c in children)
+        {
+            if (c is IHasChildren hasChildren)
+            {
+                result += new string(' ', 4 * indentation) + c.ToString() + "\n";
+                result += ToStringHelper(indentation + 1, hasChildren.GetChildren());
+            }
+            else
+            {
+                result += new string(' ', 4 * indentation) + c.ToString() + "\n";
+            }
+        }
+        return result;
+    }
 }

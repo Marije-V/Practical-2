@@ -1,3 +1,5 @@
+using Microsoft.VisualBasic.FileIO;
+
 namespace Practical2;
 
 public class FileImporter
@@ -38,11 +40,18 @@ public class FileImporter
 
             // Get the file name and return the parsed program
             string name = Path.GetFileNameWithoutExtension(path);
-            return new Program(name, parser.Parse(fileReader));
+            return new Program(name, parser.ParseWithStreamReader(fileReader));
         }
 
         // Throw exception if we cannot parse the file
         throw new Exception("We cannot parse this filetype");
+    }
+
+    public Program TryParse(string filecontent)
+    {
+        TxtParser textParser = new TxtParser();
+        return new Program("untitled program", textParser.ParseFromText(filecontent.Split("\n")));
+        // TODO make UI field where program-name is visible
     }
 
 }

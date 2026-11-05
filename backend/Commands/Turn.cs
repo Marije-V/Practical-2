@@ -13,6 +13,11 @@ public class Turn : ICommand
     {
         character.Turn(turnDirection);
     }
+
+    public override string ToString()
+    {
+        return $"Turn {turnDirection}";
+    }
 }
 
 public enum TurnDirection

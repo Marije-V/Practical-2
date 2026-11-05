@@ -58,7 +58,6 @@ public class Application
             Console.WriteLine($"Commands  |{metrics.CommandCount}");
             Console.WriteLine($"Repeats   |{metrics.RepeatCount}");
             Console.WriteLine($"Nesting   |{metrics.MaxNestingLevel}");
-
         }
         else
         {
@@ -69,53 +68,72 @@ public class Application
         }
     }
 
-    public void LoadBasicExampleProgram()
+    public string LoadBasicExampleProgram()
     {
         mainProgram = exampleLoader.GetRandomExampleByDifficulty(Difficulty.Basic);
+        return mainProgram.ToString();
     }
 
-    public void LoadAdvancedExampleProgram()
+    public string LoadAdvancedExampleProgram()
     {
         mainProgram = exampleLoader.GetRandomExampleByDifficulty(Difficulty.Advanced);
+        return mainProgram.ToString();
     }
 
-    public void LoadExpertExampleProgram()
+    public string LoadExpertExampleProgram()
     {
         mainProgram = exampleLoader.GetRandomExampleByDifficulty(Difficulty.Expert);
+        return mainProgram.ToString();
     }
 
-    public void LoadProgramFromFile()
+    public string LoadProgramFromFile()
     {
-        // let this function take a filepath as argument?
+        // TODO let this function take a filepath as argument?
         FileImporter importer = new FileImporter();
+        return "Move 0";
     }
 
-    public void Run()
+    public string Run()
     {
         // execute the main program
         Character c = mainProgram.Execute();
-        // trace:
-        // let this function return the textual trace
+        // trace
         IReadOnlyList<string> trace = c.GetTrace();
-        for (int t = 0; t < trace.Count - 1; t++)
-        {
-            Console.Write(trace[t]);
-            Console.Write(", ");
-        }
-        Console.Write(trace.Last());
-        Console.WriteLine(".");
-        Console.WriteLine($"End state: {c.PositionToString()} facing {c.DirectionToString()}.");
+
+        // textualize trace
+        string result = string.Join(", ", trace);
+        result += ".\n";
+        result += $"End state: {c.PositionToString()} facing {c.DirectionToString()}.";
+        return result;
     }
 
-    public void CalculateMetrics()
+    public string CalculateMetrics()
     {
-        Metrics metricsMainProgram;
-        metricsMainProgram = MetricsCalculator.Calculate(mainProgram);
-        Console.WriteLine("----------+--------");
-        Console.WriteLine("Metrics:  |Amount:");
-        Console.WriteLine("----------+--------");
-        Console.WriteLine($"Commands  |{metricsMainProgram.CommandCount}");
-        Console.WriteLine($"Repeats   |{metricsMainProgram.RepeatCount}");
-        Console.WriteLine($"Nesting   |{metricsMainProgram.MaxNestingLevel}");
+        Metrics metrics;
+        metrics = MetricsCalculator.Calculate(mainProgram);
+
+        List<string> result = new List<string>
+        {
+            "----------+--------",
+            "Metrics:  |Amount:",
+            "----------+--------",
+            $"Commands  |{metrics.CommandCount}",
+            $"Repeats   |{metrics.RepeatCount}",
+            $"Nesting   |{metrics.MaxNestingLevel}"
+        };
+        return string.Join("\n", result.ToArray());
+    }
+
+    public void TryParse(string filecontent)
+    {
+        try
+        {
+            FileImporter importer = new FileImporter();
+            mainProgram = importer.TryParse(filecontent);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e.Message);
+        }
     }
 }

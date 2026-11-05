@@ -73,6 +73,6 @@ public class TxtParserTest
     private static List<ICommand> Parse(string input)
     {
         using var reader = new StreamReader(new MemoryStream(Encoding.UTF8.GetBytes(input)));
-        return new TxtParser().Parse(reader);
+        return new TxtParser().ParseWithStreamReader(reader);
     }
 }

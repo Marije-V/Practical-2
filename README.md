@@ -1,6 +1,10 @@
+# Disclaimer
+
+Our program uses 4 spaces for indentation instead of a tab.
+
 # Run
 
-To run this application (currently) you have to type dotnet run --project frontend/Cody.csproj
+To run this application (currently) you have to type in your terminal: dotnet run --project frontend/Cody.csproj
 
 # Credits
 

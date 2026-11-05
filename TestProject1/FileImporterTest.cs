@@ -10,7 +10,7 @@ public class NonExistingFileParser : IProgramParser
     {
         return false;
     }
-    public List<ICommand> Parse(StreamReader content)
+    public List<ICommand> ParseWithStreamReader(StreamReader content)
     {
         return new List<ICommand>();
     }
