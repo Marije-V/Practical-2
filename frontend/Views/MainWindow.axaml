@@ -21,38 +21,51 @@
         <vm:MainViewModel />
     </Design.DataContext>
 
+    <Window.Styles>
+        <Style Selector="Button.standard">
+            <Setter Property="Background" Value="#790656"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Padding" Value="9"/>
+            <Setter Property="Margin" Value="10"/>
+            <Style Selector="^:pointerover">
+                <Setter Property="Background" Value="#f292d0"/>
+                <Setter Property="Foreground" Value="Black"/>
+            </Style>
+        </Style>
+
+    </Window.Styles>
+
     <StackPanel Orientation="Horizontal" Margin="10">
         <StackPanel Orientation="Vertical" Width="800" Margin="10">
             <StackPanel Orientation="Horizontal">
                 <SplitButton Content="Load Program" Padding="9" Margin="5" Background="#e27a1f">
                     <SplitButton.Flyout>
                         <MenuFlyout Placement="Bottom">
-                            <MenuItem Header="Load Example">
-                                <MenuItem Header="Basic" Click="LoadBasicExampleProgram" />
-                                <MenuItem Header="Advanced" Click="LoadAdvancedExampleProgram" />
-                                <MenuItem Header="Expert" Click="LoadExpertExampleProgram" />
+                            <MenuItem Header="Load Example" Background="#790656" Foreground="White">
+                                <MenuItem Header="Basic" Click="LoadBasicExampleProgram" Background="#790656" Foreground="White"/>
+                                <MenuItem Header="Advanced" Click="LoadAdvancedExampleProgram" Background="#790656" Foreground="White"/>
+                                <MenuItem Header="Expert" Click="LoadExpertExampleProgram" Background="#790656" Foreground="White"/>
                             </MenuItem>
-                            <MenuItem Header="Load from file" Click="LoadProgramFromFile" />
+                            <MenuItem Header="Load from file" Click="LoadProgramFromFile" Background="#790656" Foreground="White"/>
                         </MenuFlyout>
                     </SplitButton.Flyout>
                 </SplitButton>
-                <TextBox Padding="9" Margin="5" Name="ProgramName">Untitled Program</TextBox>
-                <Button Padding="9" Margin="5" Background="#ad037a" Foreground="AntiqueWhite">Save</Button>
+                <TextBox Padding="9" Margin="10" Name="ProgramName">Untitled Program</TextBox>
+                <Button Classes="standard" Click="SaveProgram">Save</Button>
             </StackPanel>
-            <TextBox Width="700" Height="600" AcceptsReturn="True" AcceptsTab="False" Name="ProgramTextBox" Margin="10" Padding="9"></TextBox>
+            <TextBox Width="700" Height="670" AcceptsReturn="True" AcceptsTab="False" Name="ProgramTextBox" Margin="10" Padding="9"></TextBox>
             <StackPanel Orientation="Horizontal" Margin="10" HorizontalAlignment="Center">
-                <Button Click="Run" Margin="10" Padding="9" Background="#790656" Foreground="AntiqueWhite">Run</Button>
-                <Button Click="CalculateMetrics" Padding="9" Background="#f292d0">Calculate Metrics</Button>
+                <Button Click="Run" Classes="standard">Run</Button>
+                <Button Click="CalculateMetrics" Classes="standard">Calculate Metrics</Button>
             </StackPanel>
         </StackPanel>
         <StackPanel Orientation="Vertical" Width="500">
-            <TextBlock TextWrapping="Wrap">Draw a visualized grid of a program here somehow...</TextBlock>
             <Image Width="350" Height="350"
-                   Margin="50"
+                   Margin="67"
                    Stretch="Uniform"
                    Source="../Assets/CodyTopview.png"/>
             <Border Margin="10" Padding="9" CornerRadius="9" Background="#efa869">
-                <TextBlock Height="300" Width="425" Name="OutputTextBlock" TextWrapping="Wrap" Margin="10">Output will appear here.</TextBlock>
+                <SelectableTextBlock Width="425" Name="OutputTextBlock" TextWrapping="Wrap" Margin="10">Output will appear here.</SelectableTextBlock>
             </Border>
         </StackPanel>
     </StackPanel>

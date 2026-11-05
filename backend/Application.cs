@@ -68,22 +68,22 @@ public class Application
         }
     }
 
-    public string LoadBasicExampleProgram()
+    public (string, string) LoadBasicExampleProgram()
     {
         mainProgram = exampleLoader.GetRandomExampleByDifficulty(Difficulty.Basic);
-        return mainProgram.ToString();
+        return (mainProgram.ToString(), mainProgram.name);
     }
 
-    public string LoadAdvancedExampleProgram()
+    public (string, string) LoadAdvancedExampleProgram()
     {
         mainProgram = exampleLoader.GetRandomExampleByDifficulty(Difficulty.Advanced);
-        return mainProgram.ToString();
+        return (mainProgram.ToString(), mainProgram.name);
     }
 
-    public string LoadExpertExampleProgram()
+    public (string, string) LoadExpertExampleProgram()
     {
         mainProgram = exampleLoader.GetRandomExampleByDifficulty(Difficulty.Expert);
-        return mainProgram.ToString();
+        return (mainProgram.ToString(), mainProgram.name);
     }
 
     public string LoadProgramFromFile()

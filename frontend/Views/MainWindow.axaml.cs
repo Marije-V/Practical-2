@@ -24,7 +24,7 @@ public partial class MainWindow : Window
         application.TryParse(text);
 
         // show textual trace in output-textblock
-        OutputTextBlock.Text += "\n" + application.Run();
+        OutputTextBlock.Text = application.Run();
 
         // TODO show visual trace in grid
     }
@@ -38,25 +38,25 @@ public partial class MainWindow : Window
         application.TryParse(text);
 
         // calculate the metrics so we can display them in the textblock output
-        OutputTextBlock.Text += "\n" + application.CalculateMetrics();
+        OutputTextBlock.Text = application.CalculateMetrics();
     }
 
     private void LoadBasicExampleProgram(object? sender, RoutedEventArgs e)
     {
         // change mainProgram in application and display the program in the textblock on screen.
-        ProgramTextBox.Text = application.LoadBasicExampleProgram();
+        (ProgramTextBox.Text, ProgramName.Text) = application.LoadBasicExampleProgram();
     }
 
     private void LoadAdvancedExampleProgram(object? sender, RoutedEventArgs e)
     {
         // change mainProgram in application and display the program in the textblock on screen.
-        ProgramTextBox.Text = application.LoadAdvancedExampleProgram();
+        (ProgramTextBox.Text, ProgramName.Text) = application.LoadAdvancedExampleProgram();
     }
 
     private void LoadExpertExampleProgram(object? sender, RoutedEventArgs e)
     {
         // change mainProgram in application and display the program in the textblock on screen.
-        ProgramTextBox.Text = application.LoadExpertExampleProgram();
+        (ProgramTextBox.Text, ProgramName.Text) = application.LoadExpertExampleProgram();
     }
 
     private void LoadProgramFromFile(object? sender, RoutedEventArgs e)
@@ -65,5 +65,12 @@ public partial class MainWindow : Window
 
         // TODO give filepath as argument to function below
         ProgramTextBox.Text = application.LoadProgramFromFile();
+    }
+
+    private void SaveProgram(object? sender, RoutedEventArgs e)
+    {
+        // TODO open file dialog?
+        // Do something with the program name ProgramName textbox
+        // TODO write to textfile and save on computer
     }
 }
