@@ -60,14 +60,18 @@
             </StackPanel>
         </StackPanel>
         <StackPanel Orientation="Vertical" Width="500" Margin="10">
-            <SplitButton Content="Load Exercise" Padding="9" Margin="5" Background="#e27a1f">
-                <SplitButton.Flyout>
-                    <MenuFlyout Placement="Bottom">
-                        <MenuItem Header="Load random exercise" Classes="standard" Click="LoadRandomExercise" />
-                        <MenuItem Header="Load from file" Classes="standard" Click="LoadExerciseFromFile" />
-                    </MenuFlyout>
-                </SplitButton.Flyout>
-            </SplitButton>
+            <StackPanel Orientation="Horizontal">
+                <SplitButton Content="Load Exercise" Padding="9" Margin="5" Background="#e27a1f">
+                    <SplitButton.Flyout>
+                        <MenuFlyout Placement="Bottom">
+                            <MenuItem Header="Load random exercise" Classes="standard" Click="LoadRandomExercise" />
+                            <MenuItem Header="Load from file" Classes="standard" Click="LoadExerciseFromFile" />
+                        </MenuFlyout>
+                    </SplitButton.Flyout>
+                </SplitButton>
+                <TextBlock Margin="5" Padding="9">Grid size:</TextBlock>
+                <NumericUpDown Margin="5" Padding="9" ValueChanged="GridSize_ValueChanged" Minimum="1" Maximum="10" Value="{Binding GridSize}" Name="GridSize" AllowSpin="False" ShowButtonSpinner="False"></NumericUpDown>
+            </StackPanel>
             <Image Width="350" Height="350"
                    Margin="67"
                    Stretch="Uniform"
@@ -79,13 +83,6 @@
     </StackPanel>
 
     <!-- <StackPanel Orientation="Horizontal" >
-    <Border Margin="5" CornerRadius="10" Background="LightBlue">
-    <TextBlock Margin="5"
-    FontSize="24"
-    HorizontalAlignment="Center"
-    Text="Temperature Converter" />
-
-    </Border>
     <Grid ShowGridLines="True" Margin="5"
     ColumnDefinitions="120, 100"
     RowDefinitions="Auto, Auto">
@@ -94,10 +91,6 @@
     <TextBlock Grid.Row="1" Grid.Column="0" Margin="10">Fahrenheit</TextBlock>
     <TextBox Grid.Row="1" Grid.Column="1" Margin="0 5" Text="0"/>
     </Grid>
-    <Button HorizontalAlignment="Center" VerticalAlignment="Center" Click="Button_OnClick">Random Example Program!</Button>
-    <Image Width="200" Height="200"
-    Stretch="Uniform"
-    Source="../Assets/CodyTopview.png"/>
     </StackPanel> -->
 
 </Window>

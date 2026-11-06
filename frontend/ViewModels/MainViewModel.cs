@@ -6,4 +6,6 @@ public partial class MainViewModel : ViewModelBase
 {
     [ObservableProperty]
     public partial string Greeting { get; set; } = "Welcome to Avalonia!";
+    public int GridSize { get; set; } = 5;
+
 }

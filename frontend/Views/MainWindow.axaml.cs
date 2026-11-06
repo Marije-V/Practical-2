@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System;
 using Practical2;
 using System.Collections.Generic;
+using Cody.ViewModels;
 
 namespace Cody.Views;
 
@@ -20,7 +21,7 @@ public partial class MainWindow : Window
     private void Run(object? sender, RoutedEventArgs e)
     {
         // update the mainProgram by trying to parse the text from the textblock
-        application.TryParseText(ProgramName.Text, ProgramTextBox.Text);
+        OutputTextBlock.Text = application.TryParseText(ProgramName.Text, ProgramTextBox.Text);
 
         // show textual trace in output-textblock
         OutputTextBlock.Text = application.Run();
@@ -31,7 +32,7 @@ public partial class MainWindow : Window
     private void CalculateMetrics(object? sender, RoutedEventArgs e)
     {
         // update the mainProgram by trying to parse the text from the textblock
-        application.TryParseText(ProgramName.Text, ProgramTextBox.Text);
+        OutputTextBlock.Text = application.TryParseText(ProgramName.Text, ProgramTextBox.Text);
 
         // calculate the metrics so we can display them in the textblock output
         OutputTextBlock.Text = application.CalculateMetrics();
@@ -88,5 +89,11 @@ public partial class MainWindow : Window
         // https://docs.avaloniaui.net/docs/how-to/dialogs-how-to
 
         // TODO display on screen
+    }
+
+    private void GridSize_ValueChanged(object? sender, RoutedEventArgs e)
+    {
+        // change the gridsize in application
+        application.ChangeGridSize((int)GridSize.Value);
     }
 }

@@ -136,16 +136,18 @@ public class Application
         return string.Join("\n", result);
     }
 
-    public void TryParseText(string name, string filecontent)
+    public string TryParseText(string name, string filecontent)
     {
-        //try
+        try
         {
             FileImporter importer = new FileImporter();
             mainProgram = importer.TryParseText(name, filecontent);
+            return "";
         }
-        // catch (Exception e)
+        catch (Exception e)
         {
-            //Console.WriteLine(e.Message);
+            Console.WriteLine(e.Message);
+            return e.Message;
         }
     }
 
@@ -153,5 +155,10 @@ public class Application
     {
         // assign grid an exercisegrid
         grid = exerciseLoader.GetRandomExercise();
+    }
+
+    public void ChangeGridSize(int size)
+    {
+        grid = new Grid(new Cell[size, size]);
     }
 }
