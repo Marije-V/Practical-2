@@ -4,6 +4,7 @@ namespace Practical2;
 
 public class FileImporter
 {
+    // TODO make exercise parser for importing exercisess
     private List<IProgramParser> parsers;
 
     // Create a fileimporter with only a textparser

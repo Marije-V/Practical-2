@@ -43,6 +43,7 @@ public class Grid
     private bool WallAhead()
     {
         (int nextX, int nextY) = nextCell();
+        if (GridEdge()) return false;
         if (cells[nextX, nextY] == Cell.Blocked) return true;
         return false;
     }
