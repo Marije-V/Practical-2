@@ -47,11 +47,11 @@ public class FileImporter
         throw new Exception("We cannot parse this filetype");
     }
 
-    public Program TryParse(string filecontent)
+    public Program TryParseText(string name, string filecontent)
     {
         TxtParser textParser = new TxtParser();
-        return new Program("untitled program", textParser.ParseFromText(filecontent.Split("\n")));
-        // TODO make UI field where program-name is visible
+        if (filecontent == null) filecontent = "";
+        return new Program(name, textParser.ParseFromText(filecontent.Split("\n")));
     }
 
 }

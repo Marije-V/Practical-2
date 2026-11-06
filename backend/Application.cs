@@ -5,9 +5,13 @@ public class Application
     private Program mainProgram;
     private ExampleLoader exampleLoader = new ExampleLoader();
 
+    private ExerciseLoader exerciseLoader = new ExerciseLoader();
+    public Grid grid;
+
     public Application()
     {
         mainProgram = new Program("empty", []);
+        grid = new Grid(new Cell[10, 10]);
     }
 
     public static void Main(string[] args)
@@ -37,8 +41,8 @@ public class Application
         if (input == "e")
         {
             // execute the program you have selected
-            Character c = program.Execute();
-            IReadOnlyList<string> trace = c.GetTrace();
+            Grid g = program.Execute();
+            IReadOnlyList<string> trace = g.GetTextualTrace();
             for (int t = 0; t < trace.Count - 1; t++)
             {
                 Console.Write(trace[t]);
@@ -46,7 +50,7 @@ public class Application
             }
             Console.Write(trace.Last());
             Console.WriteLine(".");
-            Console.WriteLine($"End state: {c.PositionToString()} facing {c.DirectionToString()}.");
+            Console.WriteLine($"End state: {g.CharacterPosition()} facing {g.CharacterDirection()}.");
         }
         else if (input == "m")
         {
@@ -95,16 +99,23 @@ public class Application
 
     public string Run()
     {
-        // execute the main program
-        Character c = mainProgram.Execute();
-        // trace
-        IReadOnlyList<string> trace = c.GetTrace();
-
-        // textualize trace
-        string result = string.Join(", ", trace);
-        result += ".\n";
-        result += $"End state: {c.PositionToString()} facing {c.DirectionToString()}.";
-        return result;
+        try
+        {
+            // execute the main program
+            Grid g = mainProgram.Execute();
+            // get the trace
+            IReadOnlyList<string> trace = g.GetTextualTrace();
+            // format trace
+            string result = string.Join(", ", trace);
+            result += ".\n";
+            result += $"End state: {g.CharacterPosition()} facing {g.CharacterDirection()}.";
+            return result;
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e.Message);
+            return e.Message;
+        }
     }
 
     public string CalculateMetrics()
@@ -112,7 +123,7 @@ public class Application
         Metrics metrics;
         metrics = MetricsCalculator.Calculate(mainProgram);
 
-        List<string> result = new List<string>
+        string[] result =
         {
             "----------+--------",
             "Metrics:  |Amount:",
@@ -120,20 +131,27 @@ public class Application
             $"Commands  |{metrics.CommandCount}",
             $"Repeats   |{metrics.RepeatCount}",
             $"Nesting   |{metrics.MaxNestingLevel}"
-        };
-        return string.Join("\n", result.ToArray());
+        }
+        ;
+        return string.Join("\n", result);
     }
 
-    public void TryParse(string filecontent)
+    public void TryParseText(string name, string filecontent)
     {
-        try
+        //try
         {
             FileImporter importer = new FileImporter();
-            mainProgram = importer.TryParse(filecontent);
+            mainProgram = importer.TryParseText(name, filecontent);
         }
-        catch (Exception e)
+        // catch (Exception e)
         {
-            Console.WriteLine(e.Message);
+            //Console.WriteLine(e.Message);
         }
+    }
+
+    public void LoadRandomExercise()
+    {
+        // assign grid an exercisegrid
+        grid = exerciseLoader.GetRandomExercise();
     }
 }

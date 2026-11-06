@@ -4,21 +4,23 @@ public class Program
 {
     public string name;
     private List<ICommand> commands;
+    private Grid grid;
     public Program(string name, List<ICommand> commands)
     {
         this.name = name;
         this.commands = commands;
+        grid = new Grid(new Cell[20, 20]);
     }
 
     // Loop through all the commands and execute it with a fresh character
-    public Character Execute()
+    public Grid Execute()
     {
-        Character c = new Character();
+        grid.ClearTraces();
         foreach (ICommand command in commands)
         {
-            command.Execute(c);
+            command.Execute(grid);
         }
-        return c;
+        return grid;
     }
 
     // Return the list of commands

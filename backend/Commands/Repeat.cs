@@ -12,13 +12,13 @@ public class Repeat : ICommand, IHasChildren
     }
 
     // Execute the commands inside of the repeat function
-    public void Execute(Character character)
+    public void Execute(Grid grid)
     {
         for (int t = 0; t < times; t++)
         {
             foreach (ICommand command in commands)
             {
-                command.Execute(character);
+                command.Execute(grid);
             }
         }
     }

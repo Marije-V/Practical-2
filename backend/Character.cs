@@ -1,10 +1,12 @@
+using System.Dynamic;
+
 namespace Practical2;
 
 public class Character
 {
-    private int x, y;
-    private Direction facing;
-    private List<string> trace = new List<string>();
+    public int x { get; private set; }
+    public int y { get; private set; }
+    public Direction facing { get; private set; }
 
     public Character()
     {
@@ -26,7 +28,6 @@ public class Character
         if (facing == Direction.East) x += steps;
         if (facing == Direction.South) y += steps;
         if (facing == Direction.West) x -= steps;
-        trace.Add($"Move {steps}");
     }
 
     // Change the enum direction depending on the turn and the compass direction
@@ -47,12 +48,6 @@ public class Character
             if (rightNow == Direction.South) facing = Direction.West;
             if (rightNow == Direction.West) facing = Direction.North;
         }
-        trace.Add($"Turn {turnDirection}");
-    }
-
-    public IReadOnlyList<string> GetTrace()
-    {
-        return trace;
     }
 
     public string PositionToString()

@@ -9,7 +9,7 @@ public class TxtParser : IProgramParser
     private string currentLine;
 
     // for reading from just text:
-    private List<string> textInput;
+    private string[] textInput;
     private string currentTextLine;
     private int currentLineIndex;
 
@@ -27,7 +27,7 @@ public class TxtParser : IProgramParser
 
     public List<ICommand> ParseFromText(string[] content)
     {
-        textInput = content.ToList();
+        textInput = content;
         currentLineIndex = 0;
         currentTextLine = textInput[currentLineIndex];
         return ParseTextBlock(0);
@@ -44,9 +44,13 @@ public class TxtParser : IProgramParser
             // Skip White spaces
             if (string.IsNullOrWhiteSpace(currentTextLine))
             {
-                currentTextLine = textInput[currentLineIndex + 1];
-                currentLineIndex++;
-                continue;
+                if (currentLineIndex + 1 < textInput.Count())
+                {
+                    currentTextLine = textInput[currentLineIndex + 1];
+                    currentLineIndex++;
+                    continue;
+                }
+                else { currentLine = null; break; }
             }
 
             // calculate the current indention

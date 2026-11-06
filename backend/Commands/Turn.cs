@@ -9,9 +9,9 @@ public class Turn : ICommand
         turnDirection = d;
     }
 
-    public void Execute(Character character)
+    public void Execute(Grid grid)
     {
-        character.Turn(turnDirection);
+        grid.TurnCharacter(turnDirection);
     }
 
     public override string ToString()

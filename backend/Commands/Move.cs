@@ -9,9 +9,9 @@ public class Move : ICommand
         this.steps = steps;
     }
 
-    public void Execute(Character character)
+    public void Execute(Grid grid)
     {
-        character.MoveForward(steps);
+        grid.MoveCharacterForward(steps);
     }
 
     public override string ToString()

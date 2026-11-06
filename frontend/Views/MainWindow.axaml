@@ -41,12 +41,12 @@
                 <SplitButton Content="Load Program" Padding="9" Margin="5" Background="#e27a1f">
                     <SplitButton.Flyout>
                         <MenuFlyout Placement="Bottom">
-                            <MenuItem Header="Load Example" Background="#790656" Foreground="White">
-                                <MenuItem Header="Basic" Click="LoadBasicExampleProgram" Background="#790656" Foreground="White"/>
-                                <MenuItem Header="Advanced" Click="LoadAdvancedExampleProgram" Background="#790656" Foreground="White"/>
-                                <MenuItem Header="Expert" Click="LoadExpertExampleProgram" Background="#790656" Foreground="White"/>
+                            <MenuItem Header="Load Example">
+                                <MenuItem Header="Basic" Click="LoadBasicExampleProgram"/>
+                                <MenuItem Header="Advanced" Click="LoadAdvancedExampleProgram"/>
+                                <MenuItem Header="Expert" Click="LoadExpertExampleProgram"/>
                             </MenuItem>
-                            <MenuItem Header="Load from file" Click="LoadProgramFromFile" Background="#790656" Foreground="White"/>
+                            <MenuItem Header="Load from file" Click="LoadProgramFromFile"/>
                         </MenuFlyout>
                     </SplitButton.Flyout>
                 </SplitButton>
@@ -59,7 +59,15 @@
                 <Button Click="CalculateMetrics" Classes="standard">Calculate Metrics</Button>
             </StackPanel>
         </StackPanel>
-        <StackPanel Orientation="Vertical" Width="500">
+        <StackPanel Orientation="Vertical" Width="500" Margin="10">
+            <SplitButton Content="Load Exercise" Padding="9" Margin="5" Background="#e27a1f">
+                <SplitButton.Flyout>
+                    <MenuFlyout Placement="Bottom">
+                        <MenuItem Header="Load random exercise" Classes="standard" Click="LoadRandomExercise" />
+                        <MenuItem Header="Load from file" Classes="standard" Click="LoadExerciseFromFile" />
+                    </MenuFlyout>
+                </SplitButton.Flyout>
+            </SplitButton>
             <Image Width="350" Height="350"
                    Margin="67"
                    Stretch="Uniform"
