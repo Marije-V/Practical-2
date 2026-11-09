@@ -93,7 +93,8 @@ public partial class MainWindow : Window
 
     private void GridSize_ValueChanged(object? sender, RoutedEventArgs e)
     {
-        // change the gridsize in application
-        application.ChangeGridSize((int)GridSize.Value);
+        // change the gridsize in application if the value is not null
+        if (GridSize.Value != null)
+            application.ChangeGridSize((int)GridSize.Value);
     }
 }
