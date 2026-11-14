@@ -53,7 +53,7 @@
                 <TextBox Padding="9" Margin="10" Name="ProgramName">Untitled Program</TextBox>
                 <Button Classes="standard" Click="SaveProgram">Save</Button>
             </StackPanel>
-            <TextBox Width="700" Height="670" AcceptsReturn="True" AcceptsTab="False" Name="ProgramTextBox" Margin="10" Padding="9"></TextBox>
+            <TextBox Width="700" Height="670" AcceptsReturn="True" AcceptsTab="True" Name="ProgramTextBox" Margin="10" Padding="9"></TextBox>
             <StackPanel Orientation="Horizontal" Margin="10" HorizontalAlignment="Center">
                 <Button Click="Run" Classes="standard">Run</Button>
                 <Button Click="CalculateMetrics" Classes="standard">Calculate Metrics</Button>

@@ -54,12 +54,12 @@ public class Program
         {
             if (c is IHasChildren hasChildren)
             {
-                result += new string(' ', 4 * indentation) + c.ToString() + "\n";
+                result += new string('\t', indentation) + c.ToString() + "\n";
                 result += ToStringHelper(indentation + 1, hasChildren.GetChildren());
             }
             else
             {
-                result += new string(' ', 4 * indentation) + c.ToString() + "\n";
+                result += new string('\t', indentation) + c.ToString() + "\n";
             }
         }
         return result;

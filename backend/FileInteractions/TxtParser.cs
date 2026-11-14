@@ -54,7 +54,7 @@ public class TxtParser : IProgramParser
             }
 
             // calculate the current indention
-            int level = currentTextLine.TakeWhile(char.IsWhiteSpace).Count();
+            int level = currentTextLine.TakeWhile(char.IsWhiteSpace).Sum(c => c == '\t' ? 4 : 1);
 
             // currently indention is based on 4 spaces
             if (level % 4 != 0)
@@ -72,7 +72,7 @@ public class TxtParser : IProgramParser
             }
 
             // Now we know that the indention is on the same level and we start the splitting
-            string[] words = currentTextLine.Split(" ", StringSplitOptions.RemoveEmptyEntries);
+            string[] words = currentTextLine.TrimStart().Split(" ", StringSplitOptions.RemoveEmptyEntries);
 
             // Now we read the new line while having the old data. This way if we call a repeat function it still goes to the next line instead of staying on the old one
             if (currentLineIndex + 1 < textInput.Count())
@@ -136,7 +136,7 @@ public class TxtParser : IProgramParser
             }
 
             // calculate the current indention
-            int level = currentLine.TakeWhile(char.IsWhiteSpace).Count();
+            int level = currentLine.TakeWhile(char.IsWhiteSpace).Sum(c => c == '\t' ? 4 : 1);
 
             // currently indention is based on 4 spaces
             if (level % 4 != 0)
@@ -154,7 +154,7 @@ public class TxtParser : IProgramParser
             }
 
             // Now we know that the indention is on the same level and we start the splitting
-            string[] words = currentLine.Split(" ", StringSplitOptions.RemoveEmptyEntries);
+            string[] words = currentLine.TrimStart().Split(" ", StringSplitOptions.RemoveEmptyEntries);
 
             // Now we read the new line while having the old data. This way if we call a repeat function it still goes to the next line instead of staying on the old one
             currentLine = reader.ReadLine();

@@ -23,7 +23,7 @@ public class Grid
     }
 
     public bool HasGoalCell()
-        => !cells.Cast<Cell>().Contains(Cell.Goal);
+        => cells.Cast<Cell>().Contains(Cell.Goal);
     public IReadOnlyList<string> GetTextualTrace() => textualTrace;
 
     public IReadOnlyList<(int, int, Direction)> GetGridTrace() => gridTrace;

@@ -9,6 +9,7 @@ namespace Cody.Views;
 
 public partial class MainWindow : Window
 {
+    private string pathName = System.IO.Path.GetFullPath(System.IO.Path.Combine(AppContext.BaseDirectory, "../../../../Examples"));
     private Application application = new Application();
     private DispatcherTimer timer = new DispatcherTimer();
     private int step;
@@ -107,23 +108,69 @@ public partial class MainWindow : Window
         (ProgramTextBox.Text, ProgramName.Text) = application.LoadExpertExampleProgram();
     }
 
-    private void LoadProgramFromFile(object? sender, RoutedEventArgs e)
+    private async void LoadProgramFromFile(object? sender, RoutedEventArgs e)
     {
-        // TODO open file dialog
-        // https://docs.avaloniaui.net/docs/how-to/dialogs-how-to
+        try
+        {
+            var folder = await StorageProvider.TryGetFolderFromPathAsync(new Uri(pathName));
+            var files = await StorageProvider.OpenFilePickerAsync(new Avalonia.Platform.Storage.FilePickerOpenOptions
+            {
+                Title = "Load program",
+                AllowMultiple = false,
+                SuggestedStartLocation = folder,
+                FileTypeFilter = [new Avalonia.Platform.Storage.FilePickerFileType("Text files") { Patterns = ["*.txt"] }]
+            });
+            if (files.Count == 0) return;
 
-        // TODO give filepath as argument to function below
-        ProgramTextBox.Text = application.LoadProgramFromFile();
+            // open the file
+            using var stream = await files[0].OpenReadAsync();
+            using var reader = new System.IO.StreamReader(stream);
+            string text = await reader.ReadToEndAsync();
+
+            // give the file to the application and try to parse it
+            string name = System.IO.Path.GetFileNameWithoutExtension(files[0].Name);
+            string error = application.TryParseText(name, text);
+            if (error != "") { OutputTextBlock.Text = error; return; }
+
+            // load the correct info everywhere and reset the timer
+            timer.Stop();
+            ProgramTextBox.Text = text;
+            ProgramName.Text = name;
+            OutputTextBlock.Text = $"Loaded program: {files[0].Name}";
+        }
+        catch (Exception error) { OutputTextBlock.Text = "Could not load program: " + error.Message; }
     }
 
-    private void SaveProgram(object? sender, RoutedEventArgs e)
+    private async void SaveProgram(object? sender, RoutedEventArgs e)
     {
-        // TODO open file dialog?
-        // https://docs.avaloniaui.net/docs/how-to/dialogs-how-to
+        try
+        {
+            var folder = await StorageProvider.TryGetFolderFromPathAsync(new Uri(pathName));
+            // uses avalonia filepicker
+            var file = await StorageProvider.SaveFilePickerAsync(new Avalonia.Platform.Storage.FilePickerSaveOptions
+            {
+                Title = "Save program",
+                SuggestedStartLocation = folder,
+                SuggestedFileName = string.IsNullOrWhiteSpace(ProgramName.Text) ? "Untitled Program" : ProgramName.Text,
+                DefaultExtension = "txt",
+                ShowOverwritePrompt = true,
+                FileTypeChoices = [new Avalonia.Platform.Storage.FilePickerFileType("Text files") { Patterns = ["*.txt"] }]
+            });
+            if (file == null) return;
 
-        // TODO do something with the program name (ProgramName) textbox
+            // Open the file and put in the program text, if the text is empty make the file empty aswell 
+            using (var stream = await file.OpenWriteAsync())
+            {
+                stream.SetLength(0);
+                using var writer = new System.IO.StreamWriter(stream);
+                await writer.WriteAsync(ProgramTextBox.Text ?? "");
+            }
 
-        // TODO write to textfile and save on computer
+            // Give the cody app the correct programname and give an output
+            ProgramName.Text = System.IO.Path.GetFileNameWithoutExtension(file.Name);
+            OutputTextBlock.Text = $"Saved program: {file.Name}";
+        }
+        catch (Exception error) { OutputTextBlock.Text = "Could not save program: " + error.Message; }
     }
 
     private void LoadRandomExercise(object? sender, RoutedEventArgs e)
@@ -135,12 +182,46 @@ public partial class MainWindow : Window
         // TODO display on screen
     }
 
-    private void LoadExerciseFromFile(object? sender, RoutedEventArgs e)
+    private async void LoadExerciseFromFile(object? sender, RoutedEventArgs e)
     {
-        // TODO open file dialog
-        // https://docs.avaloniaui.net/docs/how-to/dialogs-how-to
+        try
+        {
+            var folder = await StorageProvider.TryGetFolderFromPathAsync(new Uri(pathName));
+            var files = await StorageProvider.OpenFilePickerAsync(new Avalonia.Platform.Storage.FilePickerOpenOptions
+            {
+                Title = "Load exercise",
+                AllowMultiple = false,
+                SuggestedStartLocation = folder,
+                FileTypeFilter = [new Avalonia.Platform.Storage.FilePickerFileType("Text files") { Patterns = ["*.txt"] }]
+            });
+            if (files.Count == 0) return;
 
-        // TODO display on screen
+            // Open the files content
+            using var stream = await files[0].OpenReadAsync();
+            using var reader = new System.IO.StreamReader(stream);
+
+            // put the file into rows of string
+            string[] rows = (await reader.ReadToEndAsync()).Replace("\r", "").Split('\n', StringSplitOptions.RemoveEmptyEntries);
+            if (rows.Length == 0) throw new FormatException("The exercise file is empty.");
+
+            // Make a square grid
+            var cells = new Cell[rows.Length, rows.Length];
+            for (int y = 0; y < rows.Length; y++)
+            {
+                if (rows[y].Length != rows.Length) throw new FormatException("The current grid view requires a square exercise.");
+
+                // Parse each cell to give a correct Cell back
+                for (int x = 0; x < rows.Length; x++)
+                    cells[x, y] = rows[y][x] switch { 'o' => Cell.Empty, '+' => Cell.Blocked, 'x' => Cell.Goal, _ => throw new FormatException("Use o, + and x for exercise cells.") };
+            }
+            // Reset timer and reset the whole grid
+            timer.Stop();
+            GridSize.Value = rows.Length;
+            application.grid = new Practical2.Grid(cells);
+            DrawGrid();
+            OutputTextBlock.Text = $"Loaded exercise: {files[0].Name}";
+        }
+        catch (Exception error) { OutputTextBlock.Text = "Could not load exercise: " + error.Message; }
     }
 
     private void GridSize_ValueChanged(object? sender, RoutedEventArgs e)
