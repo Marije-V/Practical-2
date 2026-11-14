@@ -192,6 +192,8 @@ public class ExampleLoader
                 new Turn(TurnDirection.Left)
             })
         };
+        advancedPrograms.Add(new FileImporter().TryParseText("FindEdges", "Repeat 4\n    RepeatUntil GridEdge\n        Move 1\n    Turn Right"));
+        expertPrograms.Add(new FileImporter().TryParseText("FindEdgesNested", "Repeat 2\n    Repeat 2\n        RepeatUntil GridEdge\n            Move 1\n        Turn Right"));
     }
 
     public Program GetRandomExample()

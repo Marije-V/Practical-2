@@ -96,6 +96,9 @@ public class TxtParser : IProgramParser
                     TurnDirection turn = words[1].ToLower() == "left" ? TurnDirection.Left : TurnDirection.Right;
                     commands.Add(new Turn(turn));
                     break;
+                case "RepeatUntil":
+                    commands.Add(new RepeatUntil(Enum.Parse<Condition>(words[1]), ParseTextBlock(indent + 1)));
+                    break;
                 case "Repeat":
                     // recursion on parseblock(indent + 1) so the children are the list of the repeat.
                     commands.Add(
@@ -166,6 +169,9 @@ public class TxtParser : IProgramParser
                     // Make the turn all lowercase so left = left and the rest we just read as right
                     TurnDirection turn = words[1].ToLower() == "left" ? TurnDirection.Left : TurnDirection.Right;
                     commands.Add(new Turn(turn));
+                    break;
+                case "RepeatUntil":
+                    commands.Add(new RepeatUntil(Enum.Parse<Condition>(words[1]), ParseBlock(indent + 1)));
                     break;
                 case "Repeat":
                     // recursion on parseblock(indent + 1) so the children are the list of the repeat.

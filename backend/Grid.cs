@@ -1,9 +1,16 @@
+using System.Reflection.Metadata.Ecma335;
+
 namespace Practical2;
 
 public class Grid
 {
     private Cell[,] cells;
     public Cell[,] GetCells() => cells;
+    public string ExerciseResult()
+    {
+        if (!HasGoalCell()) return "Finished.";
+        return cells[character.x, character.y] == Cell.Goal ? "Success: goal reached." : "Failure: goal not reached.";
+    }
     private Character character;
     private List<string> textualTrace = new List<string>();
     private List<(int, int, Direction)> gridTrace = new List<(int, int, Direction)>();
@@ -15,6 +22,8 @@ public class Grid
         gridTrace.Add((character.x, character.y, character.facing));
     }
 
+    public bool HasGoalCell()
+        => !cells.Cast<Cell>().Contains(Cell.Goal);
     public IReadOnlyList<string> GetTextualTrace() => textualTrace;
 
     public IReadOnlyList<(int, int, Direction)> GetGridTrace() => gridTrace;
@@ -70,11 +79,11 @@ public class Grid
         {
             if (WallAhead())
             {
-                throw new Exception("Character can't move forward, there is a wall ahead.");
+                throw new WallAheadException();
             }
             if (GridEdge())
             {
-                throw new Exception("Character can't move forward, they are on the edge of the grid.");
+                throw new GridEdgeException();
             }
             character.MoveForward(1);
             gridTrace.Add((character.x, character.y, character.facing));
@@ -103,6 +112,14 @@ public class Grid
 
 }
 
+public class WallAheadException : Exception
+{
+    public WallAheadException() : base("Character can't move forward, there is a wall ahead.") { }
+}
+public class GridEdgeException : Exception
+{
+    public GridEdgeException() : base("Character can't move forward, they are on the edge of the grid.") { }
+}
 public enum Cell
 {
     Empty,

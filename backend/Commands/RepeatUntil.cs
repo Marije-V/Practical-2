@@ -14,8 +14,10 @@ public class RepeatUntil : ICommand, IHasChildren
     // Execute the commands inside of the repeat function
     public void Execute(Grid grid)
     {
-        while (grid.isTrue(condition))
+        int iterations = 0;
+        while (!grid.isTrue(condition))
         {
+            if (++iterations > 10000) throw new InvalidOperationException("RepeatUntil stopped after 10,000 iterations.");
             foreach (ICommand command in commands)
             {
                 command.Execute(grid);

@@ -34,13 +34,14 @@ public partial class MainWindow : Window
         {
             var program = new FileImporter().TryParseText(ProgramName.Text ?? "", ProgramTextBox.Text ?? "");
             application.grid = new Practical2.Grid(application.grid.GetCells());
+            DrawGrid();
             step = 0;
             timer.Start();
             OutputTextBlock.Text = "Running...";
             foreach (var command in program.GetCommands()) command.Execute(application.grid);
-            runResult = string.Join(", ", application.grid.GetTextualTrace()) + $".\nEnd state: {application.grid.CharacterPosition()} facing {application.grid.CharacterDirection()}.";
+            runResult = string.Join(", ", application.grid.GetTextualTrace()) + $".\nEnd state: {application.grid.CharacterPosition()} facing {application.grid.CharacterDirection()}.\n{application.grid.ExerciseResult()}";
         }
-        catch (Exception error) { runResult = error.Message; OutputTextBlock.Text = timer.IsEnabled ? "Running..." : runResult; }
+        catch (Exception error) { runResult = "Runtime error: " + error.Message; OutputTextBlock.Text = timer.IsEnabled ? "Running..." : runResult; }
     }
 
     private void DrawNextStep(object? sender, EventArgs e)
@@ -48,6 +49,13 @@ public partial class MainWindow : Window
         var trace = application.grid.GetGridTrace();
         if (step >= trace.Count) { timer.Stop(); OutputTextBlock.Text = runResult; return; }
         var (x, y, facing) = trace[step++];
+        if (application.grid.HasGoalCell())
+        {
+            // Walking tiles coloring
+            var tiles = this.FindControl<Avalonia.Controls.Primitives.UniformGrid>("Tiles")!;
+            if (application.grid.GetCells()[x, y] != Cell.Goal)
+                ((Border)tiles.Children[y * tiles.Columns + x]).Background = Brushes.LightBlue;
+        }
         codyTile.RenderTransform = new TranslateTransform(x * codyTile.Width, y * codyTile.Height);
         cody.RenderTransform = new RotateTransform((int)facing * 90 - 180);
     }
