@@ -70,12 +70,14 @@
                     </SplitButton.Flyout>
                 </SplitButton>
                 <TextBlock Margin="5" Padding="9">Grid size:</TextBlock>
-                <NumericUpDown Margin="5" Padding="9" ValueChanged="GridSize_ValueChanged" Minimum="1" Maximum="10" Value="{Binding GridSize}" Name="GridSize" AllowSpin="False" ShowButtonSpinner="False"></NumericUpDown>
+                <NumericUpDown Margin="5" Padding="9" ValueChanged="GridSize_ValueChanged" Minimum="1" Maximum="100" Value="{Binding GridSize}" Name="GridSize" AllowSpin="False" ShowButtonSpinner="False"></NumericUpDown>
             </StackPanel>
-            <Image Width="350" Height="350"
-                   Margin="67"
-                   Stretch="Uniform"
-                   Source="../Assets/CodyTopview.png"/>
+            <Grid Width="350" Height="350" Margin="67" UseLayoutRounding="False">
+                <UniformGrid Name="Tiles" />
+                <Border Name="CodyTile" HorizontalAlignment="Left" VerticalAlignment="Top">
+                    <Image Name="CodyCharacter" Source="/Assets/CodyTopview.png" HorizontalAlignment="Center" VerticalAlignment="Center" RenderTransformOrigin="50%,50%" />
+                </Border>
+            </Grid>
             <Border Margin="10" Padding="9" CornerRadius="9" Background="#efa869">
                 <SelectableTextBlock Width="425" Name="OutputTextBlock" TextWrapping="Wrap" Margin="10">Output will appear here.</SelectableTextBlock>
             </Border>

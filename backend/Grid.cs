@@ -3,26 +3,21 @@ namespace Practical2;
 public class Grid
 {
     private Cell[,] cells;
+    public Cell[,] GetCells() => cells;
     private Character character;
     private List<string> textualTrace = new List<string>();
-    private List<(int, int)> gridTrace = new List<(int, int)>();
+    private List<(int, int, Direction)> gridTrace = new List<(int, int, Direction)>();
 
     public Grid(Cell[,] cells)
     {
         this.cells = cells;
         character = new Character();
-        gridTrace.Add((character.x, character.y));
+        gridTrace.Add((character.x, character.y, character.facing));
     }
 
-    public IReadOnlyList<string> GetTextualTrace()
-    {
-        return textualTrace;
-    }
+    public IReadOnlyList<string> GetTextualTrace() => textualTrace;
 
-    public IReadOnlyList<(int, int)> GetGridTrace()
-    {
-        return gridTrace;
-    }
+    public IReadOnlyList<(int, int, Direction)> GetGridTrace() => gridTrace;
 
     public void ClearTraces()
     {
@@ -51,7 +46,7 @@ public class Grid
     private bool GridEdge()
     {
         (int nextX, int nextY) = nextCell();
-        if (nextX > cells.GetLength(0) || nextX < 0 || nextY < 0 || nextY > cells.GetLength(1)) return true;
+        if (nextX >= cells.GetLength(0) || nextX < 0 || nextY < 0 || nextY >= cells.GetLength(1)) return true;
         return false;
     }
 
@@ -82,7 +77,7 @@ public class Grid
                 throw new Exception("Character can't move forward, they are on the edge of the grid.");
             }
             character.MoveForward(1);
-            gridTrace.Add((character.x, character.y));
+            gridTrace.Add((character.x, character.y, character.facing));
             takenSteps++;
         }
         // TODO check if this exception thing works
@@ -92,6 +87,7 @@ public class Grid
     public void TurnCharacter(TurnDirection turnDirection)
     {
         character.Turn(turnDirection);
+        gridTrace.Add((character.x, character.y, character.facing));
         textualTrace.Add($"Turn {turnDirection}");
     }
 
