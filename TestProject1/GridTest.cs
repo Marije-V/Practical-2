@@ -23,4 +23,47 @@ public class GridTest
 
         Assert.Equal(expected, grid.GetTextualTrace());
     }
+
+    [Fact]
+    public void IsTrueReturnsTrueWhenWallIsAhead()
+    {
+        var cells = new Cell[2, 2];
+        cells[1, 0] = Cell.Blocked;
+        var grid = new Grid(cells);
+
+        Assert.True(grid.IsTrue(Condition.WallAhead));
+    }
+
+    [Fact]
+    public void IsTrueReturnsTrueAtGridEdge()
+    {
+        var grid = new Grid(new Cell[1, 1]);
+
+        Assert.True(grid.IsTrue(Condition.GridEdge));
+    }
+
+    [Fact]
+    public void IsTrueReturnsFalseWhenPathIsClear()
+    {
+        var grid = new Grid(new Cell[2, 2]);
+
+        Assert.False(grid.IsTrue(Condition.WallAhead));
+        Assert.False(grid.IsTrue(Condition.GridEdge));
+    }
+
+    [Fact]
+    public void IsTrueReturnsFalseForUnknownCondition()
+    {
+        var grid = new Grid(new Cell[2, 2]);
+
+        Assert.False(grid.IsTrue((Condition)99));
+    }
+
+    [Fact]
+    public void ThrowExceptionIfCharacterMovesNegativeForward()
+    {
+        var grid = new Grid(new Cell[1, 1]);
+        Assert.Throws<FormatException>(() => grid.MoveCharacterForward(-1));
+        Assert.Throws<GridEdgeException>(() => grid.MoveCharacterForward(1));
+    }
 }

@@ -1,4 +1,5 @@
 
+using System.Runtime.CompilerServices;
 using Practical2;
 
 namespace TestProject1;
@@ -107,12 +108,33 @@ public class ExampleLoaderTest
         bool isProgramFromTest = false;
         foreach (Program program in programs)
         {
-            if (program.name == randomTest.name)
+            if (program.Name == randomTest.Name)
             {
                 isProgramFromTest = true;
                 break;
             }
         }
         Assert.True(isProgramFromTest);
+    }
+
+    [Theory]
+    [InlineData(Difficulty.Basic)]
+    [InlineData(Difficulty.Advanced)]
+    [InlineData(Difficulty.Expert)]
+    public void TestRandomExampleByDifficulty(Difficulty difficulty)
+    {
+        var loader = new ExampleLoader();
+
+        var program = loader.GetRandomExampleByDifficulty(difficulty);
+
+        string[] expectedNames = difficulty switch
+        {
+            Difficulty.Basic => ["Rectangle1"],
+            Difficulty.Advanced => ["Rectangle2", "Heart", "FindEdges"],
+            Difficulty.Expert => ["Random", "FindEdgesNested"],
+            _ => []
+        };
+
+        Assert.Contains(program.Name, expectedNames);
     }
 }

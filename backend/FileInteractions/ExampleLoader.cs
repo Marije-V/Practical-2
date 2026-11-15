@@ -1,6 +1,6 @@
 namespace Practical2;
 
-public class ExampleLoader
+public class ExampleLoader : IExampleLoader
 {
     private readonly List<Program> _programs;
     private readonly List<Program> _basicPrograms;
@@ -213,12 +213,14 @@ public class ExampleLoader
         {
             return _advancedPrograms[rand.Next(0, _advancedPrograms.Count)];
         }
-        if (difficulty == Difficulty.Expert)
-        {
-            return _expertPrograms[rand.Next(0, _expertPrograms.Count)];
-        }
-        return _programs[rand.Next(0, _programs.Count)];
+
+        return _expertPrograms[rand.Next(0, _expertPrograms.Count)];
+
     }
+}
+public interface IExampleLoader
+{
+    Program GetRandomExampleByDifficulty(Difficulty difficulty);
 }
 
 public enum Difficulty

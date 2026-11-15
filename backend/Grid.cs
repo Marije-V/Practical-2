@@ -97,13 +97,15 @@ public class Grid
     public string CharacterDirection()
         => _character.DirectionToString();
 
-    private (int, int) NextCell()
+    private (int X, int Y) NextCell()
     {
-        if (_character.facing == Direction.North) return (_character.x, _character.y - 1);
-        if (_character.facing == Direction.East) return (_character.x + 1, _character.y);
-        if (_character.facing == Direction.South) return (_character.x, _character.y + 1);
-        if (_character.facing == Direction.West) return (_character.x - 1, _character.y);
-        return (0, 0);
+        return _character.facing switch
+        {
+            Direction.North => (_character.x, _character.y - 1),
+            Direction.East => (_character.x + 1, _character.y),
+            Direction.South => (_character.x, _character.y + 1),
+            _ => (_character.x - 1, _character.y),
+        };
     }
 }
 

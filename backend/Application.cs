@@ -2,21 +2,26 @@ using System.Runtime.CompilerServices;
 
 namespace Practical2;
 
+
 public class Application
 {
     private Program _mainProgram;
-    private readonly ExampleLoader _exampleLoader = new ExampleLoader();
+    private readonly IExampleLoader _exampleLoader = new ExampleLoader();
 
     private readonly ExerciseLoader _exerciseLoader = new ExerciseLoader();
-    public Grid grid { get; private set; }
+    public Grid Grid { get; private set; }
 
     private const string LineArt = "----------+--------";
-    public Application()
+    public Application() : this(new ExampleLoader())
     {
-        _mainProgram = new Program("empty", []);
-        grid = new Grid(new Cell[10, 10]);
-    }
 
+    }
+    public Application(IExampleLoader exampleLoader)
+    {
+        _exampleLoader = exampleLoader;
+        _mainProgram = new Program("empty", []);
+        Grid = new Grid(new Cell[10, 10]);
+    }
     public static void Main(string[] args)
     {
         Program program;
@@ -95,11 +100,11 @@ public class Application
 
     public string Run()
     {
-        grid = new Grid((Cell[,])grid.GetCells().Clone());
+        Grid = new Grid((Cell[,])Grid.GetCells().Clone());
         foreach (var command in _mainProgram.GetCommands())
-            command.Execute(grid);
+            command.Execute(Grid);
 
-        return string.Join(", ", grid.GetTextualTrace()) + $".\nEnd state: {grid.CharacterPosition()} facing {grid.CharacterDirection()}.\n{grid.ExerciseResult()}";
+        return string.Join(", ", Grid.GetTextualTrace()) + $".\nEnd state: {Grid.CharacterPosition()} facing {Grid.CharacterDirection()}.\n{Grid.ExerciseResult()}";
     }
 
     public void LoadProgram(string name, string text)
@@ -110,7 +115,7 @@ public class Application
 
     public void LoadExercise(string text)
     {
-        grid = GridParser.Parse(text);
+        Grid = GridParser.Parse(text);
     }
 
     public string CalculateMetrics()
@@ -149,13 +154,13 @@ public class Application
     {
         // assign grid an exercisegrid
         var exercise = _exerciseLoader.GetRandomExercise();
-        grid = new Grid((Cell[,])exercise.GetCells().Clone());
+        Grid = new Grid((Cell[,])exercise.GetCells().Clone());
     }
 
     public void ChangeGridSize(int size)
     {
         if (size < 1)
             throw new ArgumentOutOfRangeException(nameof(size), "Grid size must be positive.");
-        grid = new Grid(new Cell[size, size]);
+        Grid = new Grid(new Cell[size, size]);
     }
 }
