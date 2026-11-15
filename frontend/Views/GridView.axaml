@@ -1,0 +1,16 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Class="Cody.Views.GridView">
+    <Grid Width="350" Height="350" UseLayoutRounding="False">
+        <UniformGrid x:Name="Tiles" />
+        <Border x:Name="CodyTile"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top">
+            <Image x:Name="CodyCharacter"
+                   Source="/Assets/CodyTopview.png"
+                   HorizontalAlignment="Center"
+                   VerticalAlignment="Center"
+                   RenderTransformOrigin="50%,50%" />
+        </Border>
+    </Grid>
+</UserControl>

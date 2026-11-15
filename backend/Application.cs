@@ -6,7 +6,7 @@ public class Application
     private ExampleLoader exampleLoader = new ExampleLoader();
 
     private ExerciseLoader exerciseLoader = new ExerciseLoader();
-    public Grid grid;
+    public Grid grid { get; private set; }
 
     public Application()
     {
@@ -99,23 +99,22 @@ public class Application
 
     public string Run()
     {
-        try
-        {
-            // execute the main program
-            Grid g = mainProgram.Execute();
-            // get the trace
-            IReadOnlyList<string> trace = g.GetTextualTrace();
-            // format trace
-            string result = string.Join(", ", trace);
-            result += ".\n";
-            result += $"End state: {g.CharacterPosition()} facing {g.CharacterDirection()}.";
-            return result;
-        }
-        catch (Exception e)
-        {
-            Console.WriteLine(e.Message);
-            return e.Message;
-        }
+        grid = new Grid((Cell[,])grid.GetCells().Clone());
+        foreach (var command in mainProgram.GetCommands())
+            command.Execute(grid);
+
+        return string.Join(", ", grid.GetTextualTrace()) + $".\nEnd state: {grid.CharacterPosition()} facing {grid.CharacterDirection()}.\n{grid.ExerciseResult()}";
+    }
+
+    public void LoadProgram(string name, string text)
+    {
+        // Assignment happens only after parsing succeeds.
+        mainProgram = new FileImporter().TryParseText(name, text);
+    }
+
+    public void LoadExercise(string text)
+    {
+        grid = GridParser.Parse(text);
     }
 
     public string CalculateMetrics()
@@ -140,8 +139,7 @@ public class Application
     {
         try
         {
-            FileImporter importer = new FileImporter();
-            mainProgram = importer.TryParseText(name, filecontent);
+            LoadProgram(name, filecontent);
             return "";
         }
         catch (Exception e)
@@ -154,11 +152,14 @@ public class Application
     public void LoadRandomExercise()
     {
         // assign grid an exercisegrid
-        grid = exerciseLoader.GetRandomExercise();
+        var exercise = exerciseLoader.GetRandomExercise();
+        grid = new Grid((Cell[,])exercise.GetCells().Clone());
     }
 
     public void ChangeGridSize(int size)
     {
+        if (size < 1)
+            throw new ArgumentOutOfRangeException(nameof(size), "Grid size must be positive.");
         grid = new Grid(new Cell[size, size]);
     }
 }
