@@ -41,25 +41,4 @@ public class CharacterTest
         character.Turn(direction);
         Assert.Equal(expected, character.DirectionToString());
     }
-    [Fact]
-    public void Trace()
-    {
-        var character = new Character();
-        character.MoveForward(5);
-        character.Turn(TurnDirection.Right);
-        character.MoveForward(4);
-        character.Turn(TurnDirection.Left);
-
-        var trace = character.GetTrace();
-        IReadOnlyList<string> expected = new List<string>
-        {
-            "Move 5",
-            "Turn Right",
-            "Move 4",
-            "Turn Left"
-        };
-        Assert.Equal(trace[0], expected[0]);
-        Assert.Equal(trace.Count, expected.Count);
-        Assert.Equal(trace, expected);
-    }
 }

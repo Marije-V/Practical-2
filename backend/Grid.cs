@@ -4,37 +4,38 @@ namespace Practical2;
 
 public class Grid
 {
-    private Cell[,] cells;
-    public Cell[,] GetCells() => cells;
-    public string ExerciseResult()
-    {
-        if (!HasGoalCell()) return "Finished.";
-        return cells[character.x, character.y] == Cell.Goal ? "Success: goal reached." : "Failure: goal not reached.";
-    }
-    private Character character;
-    private List<string> textualTrace = new List<string>();
-    private List<(int, int, Direction)> gridTrace = new List<(int, int, Direction)>();
+    private readonly Cell[,] _cells;
+    public Cell[,] GetCells() => _cells;
+
+    private readonly Character _character;
+    private readonly List<string> _textualTrace = new List<string>();
+    private readonly List<(int, int, Direction)> _gridTrace = new List<(int, int, Direction)>();
 
     public Grid(Cell[,] cells)
     {
-        this.cells = cells;
-        character = new Character();
-        gridTrace.Add((character.x, character.y, character.facing));
+        _cells = cells;
+        _character = new Character();
+        _gridTrace.Add((_character.x, _character.y, _character.facing));
     }
-
+    public string ExerciseResult()
+    {
+        if (!HasGoalCell()) return "Finished.";
+        return _cells[_character.x, _character.y] == Cell.Goal ? "Success: goal reached." : "Failure: goal not reached.";
+    }
     public bool HasGoalCell()
-        => cells.Cast<Cell>().Contains(Cell.Goal);
-    public IReadOnlyList<string> GetTextualTrace() => textualTrace;
-
-    public IReadOnlyList<(int, int, Direction)> GetGridTrace() => gridTrace;
+        => _cells.Cast<Cell>().Contains(Cell.Goal);
+    public IReadOnlyList<string> GetTextualTrace()
+        => _textualTrace;
+    public IReadOnlyList<(int, int, Direction)> GetGridTrace()
+        => _gridTrace;
 
     public void ClearTraces()
     {
-        textualTrace.Clear();
-        gridTrace.Clear();
+        _textualTrace.Clear();
+        _gridTrace.Clear();
     }
 
-    public bool isTrue(Condition c)
+    public bool IsTrue(Condition c)
     {
         return c switch
         {
@@ -46,33 +47,24 @@ public class Grid
 
     private bool WallAhead()
     {
-        (int nextX, int nextY) = nextCell();
+        (int nextX, int nextY) = NextCell();
         if (GridEdge()) return false;
-        if (cells[nextX, nextY] == Cell.Blocked) return true;
+        if (_cells[nextX, nextY] == Cell.Blocked) return true;
         return false;
     }
 
     private bool GridEdge()
     {
-        (int nextX, int nextY) = nextCell();
-        if (nextX >= cells.GetLength(0) || nextX < 0 || nextY < 0 || nextY >= cells.GetLength(1)) return true;
+        (int nextX, int nextY) = NextCell();
+        if (nextX >= _cells.GetLength(0) || nextX < 0 || nextY < 0 || nextY >= _cells.GetLength(1)) return true;
         return false;
-    }
-
-    private (int, int) nextCell()
-    {
-        if (character.facing == Direction.North) return (character.x, character.y - 1);
-        if (character.facing == Direction.East) return (character.x + 1, character.y);
-        if (character.facing == Direction.South) return (character.x, character.y + 1);
-        if (character.facing == Direction.West) return (character.x - 1, character.y);
-        return (0, 0);
     }
 
     public void MoveCharacterForward(int steps)
     {
         if (steps < 0)
         {
-            throw new Exception("Character can't move negative steps.");
+            throw new FormatException("Character can't move negative steps.");
         }
         int takenSteps = 0;
         while (takenSteps < steps)
@@ -85,31 +77,34 @@ public class Grid
             {
                 throw new GridEdgeException();
             }
-            character.MoveForward(1);
-            gridTrace.Add((character.x, character.y, character.facing));
+            _character.MoveForward(1);
+            _gridTrace.Add((_character.x, _character.y, _character.facing));
             takenSteps++;
         }
-        // TODO check if this exception thing works
-        textualTrace.Add($"Move {steps}");
+        _textualTrace.Add($"Move {steps}");
     }
 
     public void TurnCharacter(TurnDirection turnDirection)
     {
-        character.Turn(turnDirection);
-        gridTrace.Add((character.x, character.y, character.facing));
-        textualTrace.Add($"Turn {turnDirection}");
+        _character.Turn(turnDirection);
+        _gridTrace.Add((_character.x, _character.y, _character.facing));
+        _textualTrace.Add($"Turn {turnDirection}");
     }
 
     public string CharacterPosition()
-    {
-        return character.PositionToString();
-    }
+        => _character.PositionToString();
 
     public string CharacterDirection()
-    {
-        return character.DirectionToString();
-    }
+        => _character.DirectionToString();
 
+    private (int, int) NextCell()
+    {
+        if (_character.facing == Direction.North) return (_character.x, _character.y - 1);
+        if (_character.facing == Direction.East) return (_character.x + 1, _character.y);
+        if (_character.facing == Direction.South) return (_character.x, _character.y + 1);
+        if (_character.facing == Direction.West) return (_character.x - 1, _character.y);
+        return (0, 0);
+    }
 }
 
 public class WallAheadException : Exception

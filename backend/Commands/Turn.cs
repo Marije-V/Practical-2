@@ -2,22 +2,19 @@ namespace Practical2;
 
 public class Turn : ICommand
 {
-    private TurnDirection turnDirection;
+    private readonly TurnDirection _turnDirection;
 
     public Turn(TurnDirection d)
     {
-        turnDirection = d;
+        _turnDirection = d;
     }
 
     public void Execute(Grid grid)
-    {
-        grid.TurnCharacter(turnDirection);
-    }
+        => grid.TurnCharacter(_turnDirection);
 
     public override string ToString()
-    {
-        return $"Turn {turnDirection}";
-    }
+        => $"Turn {_turnDirection}";
+
 }
 
 public enum TurnDirection

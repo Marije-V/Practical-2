@@ -4,11 +4,13 @@ public static class GridParser
 {
     public static Grid Parse(string text)
     {
-        string[] rows = text.Replace("\r", "")
-            .Split('\n', StringSplitOptions.RemoveEmptyEntries);
+        // Splits the file into rows
+        string[] rows = text.Replace("\r", "").Split('\n', StringSplitOptions.RemoveEmptyEntries);
+
         if (rows.Length == 0)
             throw new FormatException("The exercise file is empty.");
 
+        // Make a new Cellgrid and fill it with the right value
         var cells = new Cell[rows.Length, rows.Length];
         for (int y = 0; y < rows.Length; y++)
         {

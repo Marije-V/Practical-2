@@ -4,14 +4,10 @@ namespace Practical2;
 
 public class TxtParser : IProgramParser
 {
-    // for streamreader approach:
-    private StreamReader reader;
-    private string currentLine;
-
     // for reading from just text:
-    private string[] textInput;
-    private string currentTextLine;
-    private int currentLineIndex;
+    private string[] _textInput;
+    private string _currentTextLine;
+    private int _currentLineIndex;
 
     public TxtParser()
     {
@@ -21,16 +17,23 @@ public class TxtParser : IProgramParser
     // checks if the parser can parse the file in this filepath
     public bool CanParse(string filepath)
     {
-        string extension = filepath.Split('.').Last();
+        string[] splittedFilepath = filepath.Split('.');
+        string extension = splittedFilepath[splittedFilepath.Count() - 1];
         return extension == "txt";
     }
 
     public List<ICommand> ParseFromText(string[] content)
     {
-        textInput = content;
-        currentLineIndex = 0;
-        currentTextLine = textInput[currentLineIndex];
+        _textInput = content;
+        _currentLineIndex = 0;
+        _currentTextLine = _textInput.Length == 0 ? null : _textInput[_currentLineIndex];
         return ParseTextBlock(0);
+    }
+    public List<ICommand> ParseWithStreamReader(StreamReader content)
+    {
+        string text = content.ReadToEnd();
+
+        return ParseFromText(text.Replace("\r", "").Split('\n'));
     }
 
     // parses a block from the parser. So like all commands within a repeat. if repeat in repeat it uses recursion
@@ -39,31 +42,16 @@ public class TxtParser : IProgramParser
         List<ICommand> commands = new List<ICommand>();
 
         // Keep going until there is no new line in the textfile
-        while (currentTextLine != null)
+        while (_currentTextLine != null)
         {
             // Skip White spaces
-            if (string.IsNullOrWhiteSpace(currentTextLine))
+            if (string.IsNullOrWhiteSpace(_currentTextLine))
             {
-                if (currentLineIndex + 1 < textInput.Count())
-                {
-                    currentTextLine = textInput[currentLineIndex + 1];
-                    currentLineIndex++;
-                    continue;
-                }
-                else { currentLine = null; break; }
+                AdvanceLine();
+                continue;
             }
 
-            // calculate the current indention
-            int level = currentTextLine.TakeWhile(char.IsWhiteSpace).Sum(c => c == '\t' ? 4 : 1);
-
-            // currently indention is based on 4 spaces
-            if (level % 4 != 0)
-            {
-                throw new Exception("The indentation in this file should be per 4 spaces.");
-            }
-
-            // Divide it by 4 to get the actual indention level
-            level /= 4;
+            int level = GetIndentationLevel(_currentTextLine);
 
             // If the indention level is smaller it should stop, with the current block
             if (level < indent)
@@ -72,18 +60,10 @@ public class TxtParser : IProgramParser
             }
 
             // Now we know that the indention is on the same level and we start the splitting
-            string[] words = currentTextLine.TrimStart().Split(" ", StringSplitOptions.RemoveEmptyEntries);
+            string[] words = _currentTextLine.TrimStart().Split(" ", StringSplitOptions.RemoveEmptyEntries);
 
             // Now we read the new line while having the old data. This way if we call a repeat function it still goes to the next line instead of staying on the old one
-            if (currentLineIndex + 1 < textInput.Count())
-            {
-                currentTextLine = textInput[currentLineIndex + 1];
-                currentLineIndex++;
-            }
-            else
-            {
-                currentTextLine = null;
-            }
+            AdvanceLine();
 
             switch (words[0])
             {
@@ -112,79 +92,28 @@ public class TxtParser : IProgramParser
         }
         return commands;
     }
-
-    public List<ICommand> ParseWithStreamReader(StreamReader content)
+    private void AdvanceLine()
     {
-        reader = content;
-        currentLine = reader.ReadLine();
-        return ParseBlock(0);
+        _currentLineIndex++;
+
+        _currentTextLine = _currentLineIndex < _textInput.Length
+            ? _textInput[_currentLineIndex]
+            : null;
     }
-
-    // parses a block from the parser. So like all commands within a repeat. if repeat in repeat it uses recursion
-    private List<ICommand> ParseBlock(int indent)
+    private static int GetIndentationLevel(string line)
     {
-        List<ICommand> commands = new List<ICommand>();
+        const int spacesPerLevel = 4;
 
-        // Keep going until there is no new line in the textfile
-        while (currentLine != null)
+        // calculate the current indention
+        int spaces = line.TakeWhile(char.IsWhiteSpace).Sum(character => character == '\t' ? spacesPerLevel : 1);
+
+        // currently indention is based on 4 spaces
+        if (spaces % spacesPerLevel != 0)
         {
-            // Skip White spaces
-            if (string.IsNullOrWhiteSpace(currentLine))
-            {
-                currentLine = reader.ReadLine();
-                continue;
-            }
-
-            // calculate the current indention
-            int level = currentLine.TakeWhile(char.IsWhiteSpace).Sum(c => c == '\t' ? 4 : 1);
-
-            // currently indention is based on 4 spaces
-            if (level % 4 != 0)
-            {
-                throw new Exception("The indentation in this file should be 4 spaces.");
-            }
-
-            // Divide it by 4 to get the actual indention level
-            level /= 4;
-
-            // If the indention level is smaller it should stop, with the current block
-            if (level < indent)
-            {
-                break;
-            }
-
-            // Now we know that the indention is on the same level and we start the splitting
-            string[] words = currentLine.TrimStart().Split(" ", StringSplitOptions.RemoveEmptyEntries);
-
-            // Now we read the new line while having the old data. This way if we call a repeat function it still goes to the next line instead of staying on the old one
-            currentLine = reader.ReadLine();
-
-            switch (words[0])
-            {
-                case "Move":
-                    // Parse the amount of steps and make a new move commando
-                    commands.Add(new Move(int.Parse(words[1])));
-                    break;
-                case "Turn":
-                    // Make the turn all lowercase so left = left and the rest we just read as right
-                    TurnDirection turn = words[1].ToLower() == "left" ? TurnDirection.Left : TurnDirection.Right;
-                    commands.Add(new Turn(turn));
-                    break;
-                case "RepeatUntil":
-                    commands.Add(new RepeatUntil(Enum.Parse<Condition>(words[1]), ParseBlock(indent + 1)));
-                    break;
-                case "Repeat":
-                    // recursion on parseblock(indent + 1) so the children are the list of the repeat.
-                    commands.Add(
-                        new Repeat(int.Parse(words[1]),
-                        ParseBlock(indent + 1))
-                    );
-                    break;
-                default:
-                    break;
-            }
+            throw new FormatException("The indentation in this file should be 4 spaces.");
         }
-        return commands;
-    }
 
+        // Divide it by spacesPerLevel to get the actual indention level
+        return spaces / spacesPerLevel;
+    }
 }

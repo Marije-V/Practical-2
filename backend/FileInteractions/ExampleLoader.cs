@@ -2,13 +2,13 @@ namespace Practical2;
 
 public class ExampleLoader
 {
-    private List<Program> programs;
-    private List<Program> basicPrograms;
-    private List<Program> advancedPrograms;
-    private List<Program> expertPrograms;
+    private readonly List<Program> _programs;
+    private readonly List<Program> _basicPrograms;
+    private readonly List<Program> _advancedPrograms;
+    private readonly List<Program> _expertPrograms;
     public ExampleLoader()
     {
-        programs = new List<Program>
+        _programs = new List<Program>
         {
             //Example 1
             new Program("Rectangle1", new List<ICommand>
@@ -97,7 +97,7 @@ public class ExampleLoader
                 })
             })
         };
-        basicPrograms = new List<Program>
+        _basicPrograms = new List<Program>
         {
             // Rectangle Basic
             new Program("Rectangle1", new List<ICommand>
@@ -112,7 +112,7 @@ public class ExampleLoader
                 new Turn(TurnDirection.Right)
             })
         };
-        advancedPrograms = new List<Program>
+        _advancedPrograms = new List<Program>
         {
             // Rectangle Advanced
             new Program("Rectangle2", new List<ICommand>
@@ -170,7 +170,7 @@ public class ExampleLoader
                 })
             })
         };
-        expertPrograms = new List<Program>
+        _expertPrograms = new List<Program>
         {
             // Random Expert
             new Program("Random", new List<ICommand>
@@ -192,32 +192,32 @@ public class ExampleLoader
                 new Turn(TurnDirection.Left)
             })
         };
-        advancedPrograms.Add(new FileImporter().TryParseText("FindEdges", "Repeat 4\n    RepeatUntil GridEdge\n        Move 1\n    Turn Right"));
-        expertPrograms.Add(new FileImporter().TryParseText("FindEdgesNested", "Repeat 2\n    Repeat 2\n        RepeatUntil GridEdge\n            Move 1\n        Turn Right"));
+        _advancedPrograms.Add(FileImporter.TryParseText("FindEdges", "Repeat 4\n    RepeatUntil GridEdge\n        Move 1\n    Turn Right"));
+        _expertPrograms.Add(FileImporter.TryParseText("FindEdgesNested", "Repeat 2\n    Repeat 2\n        RepeatUntil GridEdge\n            Move 1\n        Turn Right"));
     }
 
     public Program GetRandomExample()
     {
         var rand = new Random();
-        return programs[rand.Next(0, programs.Count)];
+        return _programs[rand.Next(0, _programs.Count)];
     }
 
-    public Program GetRandomExampleByDifficulty(Difficulty d)
+    public Program GetRandomExampleByDifficulty(Difficulty difficulty)
     {
         var rand = new Random();
-        if (d == Difficulty.Basic)
+        if (difficulty == Difficulty.Basic)
         {
-            return basicPrograms[rand.Next(0, basicPrograms.Count)];
+            return _basicPrograms[rand.Next(0, _basicPrograms.Count)];
         }
-        if (d == Difficulty.Advanced)
+        if (difficulty == Difficulty.Advanced)
         {
-            return advancedPrograms[rand.Next(0, advancedPrograms.Count)];
+            return _advancedPrograms[rand.Next(0, _advancedPrograms.Count)];
         }
-        if (d == Difficulty.Expert)
+        if (difficulty == Difficulty.Expert)
         {
-            return expertPrograms[rand.Next(0, expertPrograms.Count)];
+            return _expertPrograms[rand.Next(0, _expertPrograms.Count)];
         }
-        return programs[rand.Next(0, programs.Count)];
+        return _programs[rand.Next(0, _programs.Count)];
     }
 }
 

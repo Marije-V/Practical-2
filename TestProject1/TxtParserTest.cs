@@ -65,7 +65,7 @@ public class TxtParserTest
               Move 5
             """;
 
-        var exception = Assert.Throws<Exception>(() => Parse(input));
+        var exception = Assert.Throws<FormatException>(() => Parse(input));
 
         Assert.Equal("The indentation in this file should be 4 spaces.", exception.Message);
     }

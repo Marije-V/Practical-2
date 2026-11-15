@@ -2,21 +2,21 @@ namespace Practical2;
 
 public class Repeat : ICommand, IHasChildren
 {
-    private int times;
-    private List<ICommand> commands;
+    private readonly int _times;
+    private readonly List<ICommand> _commands;
 
     public Repeat(int times, List<ICommand> commands)
     {
-        this.times = times;
-        this.commands = commands;
+        this._times = times;
+        this._commands = commands;
     }
 
     // Execute the commands inside of the repeat function
     public void Execute(Grid grid)
     {
-        for (int t = 0; t < times; t++)
+        for (int t = 0; t < _times; t++)
         {
-            foreach (ICommand command in commands)
+            foreach (ICommand command in _commands)
             {
                 command.Execute(grid);
             }
@@ -24,12 +24,9 @@ public class Repeat : ICommand, IHasChildren
     }
 
     public List<ICommand> GetChildren()
-    {
-        return commands;
-    }
+        => _commands;
 
     public override string ToString()
-    {
-        return $"Repeat {times}";
-    }
+        => $"Repeat {_times}";
+
 }

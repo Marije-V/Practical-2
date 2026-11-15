@@ -29,14 +29,14 @@ public class FileImporterTest
         var result = importer.Import(path);
         string expectedName = "Test";
         Assert.IsType<Program>(result);
-        Assert.Equal(expectedName, result.name);
+        Assert.Equal(expectedName, result.Name);
     }
     [Fact]
     public void TestFileNotExists()
     {
         string filepath = "nonexistingfile.txt";
         FileImporter importer = new FileImporter();
-        var exception = Assert.Throws<Exception>(() => importer.Import(filepath));
+        var exception = Assert.Throws<FormatException>(() => importer.Import(filepath));
         Assert.Equal("Filepath does not exist", exception.Message);
     }
     [Fact]
@@ -46,7 +46,7 @@ public class FileImporterTest
         {
             new NonExistingFileParser()
         });
-        var exception = Assert.Throws<Exception>(() => importer.Import(path));
+        var exception = Assert.Throws<FormatException>(() => importer.Import(path));
 
         Assert.Equal("We cannot parse this filetype", exception.Message);
     }

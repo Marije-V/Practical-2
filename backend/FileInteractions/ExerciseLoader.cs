@@ -2,17 +2,17 @@ namespace Practical2;
 
 public class ExerciseLoader
 {
-    private List<Grid> exercises;
+    private List<Grid> _exercises;
     public ExerciseLoader()
     {
-        exercises = new List<Grid>
+        _exercises = new List<Grid>
         {
             Exercise1(),
             Exercise2()
         };
     }
 
-    private Grid Exercise1()
+    private static Grid Exercise1()
     {
         Cell[,] cells = new Cell[,]{
             {Cell.Empty, Cell.Empty, Cell.Blocked, Cell.Blocked, Cell.Blocked},
@@ -23,7 +23,7 @@ public class ExerciseLoader
 
         return new Grid(cells);
     }
-    private Grid Exercise2()
+    private static Grid Exercise2()
     {
         Cell[,] cells = new Cell[,]{
             {Cell.Empty, Cell.Empty, Cell.Blocked, Cell.Blocked, Cell.Blocked},
@@ -38,6 +38,6 @@ public class ExerciseLoader
     public Grid GetRandomExercise()
     {
         var rand = new Random();
-        return exercises[rand.Next(0, exercises.Count)];
+        return _exercises[rand.Next(0, _exercises.Count)];
     }
 }

@@ -4,34 +4,34 @@ namespace Practical2;
 
 public class FileImporter
 {
-    // TODO make exercise parser for importing exercisess
-    private List<IProgramParser> parsers;
+    private readonly List<IProgramParser> _parsers;
 
     // Create a fileimporter with only a textparser
     public FileImporter()
     {
-        parsers = [new TxtParser()];
+        _parsers = [new TxtParser()];
     }
     // Create a fileimporter with multiple types of parsers
     public FileImporter(List<IProgramParser> parsers)
     {
-        this.parsers = parsers;
+        _parsers = parsers;
     }
     public Program Import(string path)
     {
         //check whether the file exists
         if (!File.Exists(path))
         {
-            throw new Exception("Filepath does not exist");
+            throw new FormatException("Filepath does not exist");
         }
 
         // Loop through all parsers 
-        foreach (IProgramParser parser in parsers)
+        foreach (IProgramParser parser in _parsers)
         {
-            string extension = path.Split('.').Last();
+            string[] splittedFilepath = path.Split('.');
+            string extension = splittedFilepath[splittedFilepath.Count() - 1];
 
             // If the parser does not have the same extension as the file continue
-            if (parser.CanParse(extension) == false)
+            if (!parser.CanParse(extension))
             {
                 continue;
             }
@@ -45,10 +45,10 @@ public class FileImporter
         }
 
         // Throw exception if we cannot parse the file
-        throw new Exception("We cannot parse this filetype");
+        throw new FormatException("We cannot parse this filetype");
     }
 
-    public Program TryParseText(string name, string filecontent)
+    public static Program TryParseText(string name, string filecontent)
     {
         TxtParser textParser = new TxtParser();
         if (filecontent == null) filecontent = "";

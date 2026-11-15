@@ -2,20 +2,20 @@ namespace Practical2;
 
 public class Move : ICommand
 {
-    private int steps;
+    private readonly int _steps;
 
     public Move(int steps)
     {
-        this.steps = steps;
+        this._steps = steps;
     }
 
     public void Execute(Grid grid)
     {
-        grid.MoveCharacterForward(steps);
+        grid.MoveCharacterForward(_steps);
     }
 
     public override string ToString()
     {
-        return $"Move {steps}";
+        return $"Move {_steps}";
     }
 }

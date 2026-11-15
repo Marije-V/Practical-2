@@ -33,32 +33,16 @@ public class Character
     // Change the enum direction depending on the turn and the compass direction
     public void Turn(TurnDirection turnDirection)
     {
-        Direction rightNow = facing;
-        if (turnDirection == TurnDirection.Left)
-        {
-            if (rightNow == Direction.North) facing = Direction.West;
-            if (rightNow == Direction.East) facing = Direction.North;
-            if (rightNow == Direction.South) facing = Direction.East;
-            if (rightNow == Direction.West) facing = Direction.South;
-        }
-        if (turnDirection == TurnDirection.Right)
-        {
-            if (rightNow == Direction.North) facing = Direction.East;
-            if (rightNow == Direction.East) facing = Direction.South;
-            if (rightNow == Direction.South) facing = Direction.West;
-            if (rightNow == Direction.West) facing = Direction.North;
-        }
+        int offset = turnDirection == TurnDirection.Left ? 3 : 1;
+        facing = (Direction)(((int)facing + offset) % 4);
     }
 
     public string PositionToString()
-    {
-        return $"({x}, {y})";
-    }
+        => $"({x}, {y})";
 
     public string DirectionToString()
-    {
-        return $"{facing}";
-    }
+        => $"{facing}";
+
 }
 
 public enum Direction

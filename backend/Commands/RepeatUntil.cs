@@ -2,23 +2,23 @@ namespace Practical2;
 
 public class RepeatUntil : ICommand, IHasChildren
 {
-    private Condition condition;
-    private List<ICommand> commands;
+    private readonly Condition _condition;
+    private readonly List<ICommand> _commands;
 
     public RepeatUntil(Condition condition, List<ICommand> commands)
     {
-        this.condition = condition;
-        this.commands = commands;
+        _condition = condition;
+        _commands = commands;
     }
 
     // Execute the commands inside of the repeat function
     public void Execute(Grid grid)
     {
         int iterations = 0;
-        while (!grid.isTrue(condition))
+        while (!grid.IsTrue(_condition))
         {
             if (++iterations > 10000) throw new InvalidOperationException("RepeatUntil stopped after 10,000 iterations.");
-            foreach (ICommand command in commands)
+            foreach (ICommand command in _commands)
             {
                 command.Execute(grid);
             }
@@ -26,12 +26,9 @@ public class RepeatUntil : ICommand, IHasChildren
     }
 
     public List<ICommand> GetChildren()
-    {
-        return commands;
-    }
+        => _commands;
 
     public override string ToString()
-    {
-        return $"RepeatUntil {condition}";
-    }
+        => $"RepeatUntil {_condition}";
+
 }

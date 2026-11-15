@@ -1,67 +1,60 @@
+using System.Text;
+
 namespace Practical2;
 
 public class Program
 {
-    public string name;
-    private List<ICommand> commands;
-    private Grid grid;
+    public string Name;
+    private readonly List<ICommand> _commands;
+    private readonly Grid _grid;
     public Program(string name, List<ICommand> commands)
     {
-        this.name = name;
-        this.commands = commands;
-        grid = new Grid(new Cell[20, 20]);
+        Name = name;
+        _commands = commands;
+        _grid = new Grid(new Cell[20, 20]);
     }
 
     // Loop through all the commands and execute it with a fresh character
     public Grid Execute()
     {
-        grid.ClearTraces();
-        foreach (ICommand command in commands)
+        _grid.ClearTraces();
+        foreach (ICommand command in _commands)
         {
-            command.Execute(grid);
+            command.Execute(_grid);
         }
-        return grid;
+        return _grid;
     }
 
     // Return the list of commands
     public IReadOnlyList<ICommand> GetCommands()
-    {
-        return commands;
-    }
+        => _commands;
+
 
     public override string ToString()
     {
-        string result = "";
-        foreach (ICommand c in commands)
+        StringBuilder build = new();
+        foreach (ICommand c in _commands)
         {
+            build.Append(c.ToString() + "\n");
             if (c is IHasChildren hasChildren)
             {
-                result += c.ToString() + "\n";
-                result += ToStringHelper(1, hasChildren.GetChildren());
-            }
-            else
-            {
-                result += c.ToString() + "\n";
+                build.Append(ToStringHelper(1, hasChildren.GetChildren()));
             }
         }
-        return result;
+        return build.ToString();
     }
 
-    private string ToStringHelper(int indentation, List<ICommand> children)
+    private static string ToStringHelper(int indentation, List<ICommand> children)
     {
-        string result = "";
+        StringBuilder build = new();
         foreach (ICommand c in children)
         {
+            build.Append(new string('\t', indentation) + c.ToString() + "\n");
             if (c is IHasChildren hasChildren)
             {
-                result += new string('\t', indentation) + c.ToString() + "\n";
-                result += ToStringHelper(indentation + 1, hasChildren.GetChildren());
-            }
-            else
-            {
-                result += new string('\t', indentation) + c.ToString() + "\n";
+                build.Append(ToStringHelper(indentation + 1, hasChildren.GetChildren()));
             }
         }
-        return result;
+        return build.ToString();
     }
 }

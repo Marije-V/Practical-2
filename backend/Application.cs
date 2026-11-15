@@ -1,16 +1,19 @@
+using System.Runtime.CompilerServices;
+
 namespace Practical2;
 
 public class Application
 {
-    private Program mainProgram;
-    private ExampleLoader exampleLoader = new ExampleLoader();
+    private Program _mainProgram;
+    private readonly ExampleLoader _exampleLoader = new ExampleLoader();
 
-    private ExerciseLoader exerciseLoader = new ExerciseLoader();
+    private readonly ExerciseLoader _exerciseLoader = new ExerciseLoader();
     public Grid grid { get; private set; }
 
+    private const string LineArt = "----------+--------";
     public Application()
     {
-        mainProgram = new Program("empty", []);
+        _mainProgram = new Program("empty", []);
         grid = new Grid(new Cell[10, 10]);
     }
 
@@ -26,7 +29,7 @@ public class Application
         {
             // Get a random example program
             program = ex.GetRandomExample();
-            Console.WriteLine($"Random selection gave you program: {program.name}.");
+            Console.WriteLine($"Random selection gave you program: {program.Name}.");
         }
         else
         {
@@ -56,9 +59,9 @@ public class Application
         {
             // Calculate the metrics for the program
             metrics = MetricsCalculator.Calculate(program);
-            Console.WriteLine("----------+--------");
+            Console.WriteLine(LineArt);
             Console.WriteLine("Metrics:  |Amount:");
-            Console.WriteLine("----------+--------");
+            Console.WriteLine(LineArt);
             Console.WriteLine($"Commands  |{metrics.CommandCount}");
             Console.WriteLine($"Repeats   |{metrics.RepeatCount}");
             Console.WriteLine($"Nesting   |{metrics.MaxNestingLevel}");
@@ -74,33 +77,26 @@ public class Application
 
     public (string, string) LoadBasicExampleProgram()
     {
-        mainProgram = exampleLoader.GetRandomExampleByDifficulty(Difficulty.Basic);
-        return (mainProgram.ToString(), mainProgram.name);
+        _mainProgram = _exampleLoader.GetRandomExampleByDifficulty(Difficulty.Basic);
+        return (_mainProgram.ToString(), _mainProgram.Name);
     }
 
     public (string, string) LoadAdvancedExampleProgram()
     {
-        mainProgram = exampleLoader.GetRandomExampleByDifficulty(Difficulty.Advanced);
-        return (mainProgram.ToString(), mainProgram.name);
+        _mainProgram = _exampleLoader.GetRandomExampleByDifficulty(Difficulty.Advanced);
+        return (_mainProgram.ToString(), _mainProgram.Name);
     }
 
     public (string, string) LoadExpertExampleProgram()
     {
-        mainProgram = exampleLoader.GetRandomExampleByDifficulty(Difficulty.Expert);
-        return (mainProgram.ToString(), mainProgram.name);
-    }
-
-    public string LoadProgramFromFile()
-    {
-        // TODO let this function take a filepath as argument?
-        FileImporter importer = new FileImporter();
-        return "Move 0";
+        _mainProgram = _exampleLoader.GetRandomExampleByDifficulty(Difficulty.Expert);
+        return (_mainProgram.ToString(), _mainProgram.Name);
     }
 
     public string Run()
     {
         grid = new Grid((Cell[,])grid.GetCells().Clone());
-        foreach (var command in mainProgram.GetCommands())
+        foreach (var command in _mainProgram.GetCommands())
             command.Execute(grid);
 
         return string.Join(", ", grid.GetTextualTrace()) + $".\nEnd state: {grid.CharacterPosition()} facing {grid.CharacterDirection()}.\n{grid.ExerciseResult()}";
@@ -109,7 +105,7 @@ public class Application
     public void LoadProgram(string name, string text)
     {
         // Assignment happens only after parsing succeeds.
-        mainProgram = new FileImporter().TryParseText(name, text);
+        _mainProgram = FileImporter.TryParseText(name, text);
     }
 
     public void LoadExercise(string text)
@@ -120,13 +116,13 @@ public class Application
     public string CalculateMetrics()
     {
         Metrics metrics;
-        metrics = MetricsCalculator.Calculate(mainProgram);
+        metrics = MetricsCalculator.Calculate(_mainProgram);
 
         string[] result =
         {
-            "----------+--------",
+            LineArt,
             "Metrics:  |Amount:",
-            "----------+--------",
+            LineArt,
             $"Commands  |{metrics.CommandCount}",
             $"Repeats   |{metrics.RepeatCount}",
             $"Nesting   |{metrics.MaxNestingLevel}"
@@ -152,7 +148,7 @@ public class Application
     public void LoadRandomExercise()
     {
         // assign grid an exercisegrid
-        var exercise = exerciseLoader.GetRandomExercise();
+        var exercise = _exerciseLoader.GetRandomExercise();
         grid = new Grid((Cell[,])exercise.GetCells().Clone());
     }
 
