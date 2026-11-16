@@ -51,7 +51,7 @@ public partial class MainWindow : Window
 
     private void DrawNextStep(object? sender, EventArgs e)
     {
-        var trace = _application.grid.GetGridTrace();
+        var trace = _application.Grid.GetGridTrace();
         if (step >= trace.Count) { _timer.Stop(); OutputTextBlock.Text = runResult; return; }
         var (x, y, facing) = trace[step++];
         ExerciseGrid?.DisplayCharacter(x, y, facing);
@@ -60,7 +60,7 @@ public partial class MainWindow : Window
     private void DrawGrid()
     {
         _timer.Stop();
-        ExerciseGrid?.DisplayGrid(_application.grid);
+        ExerciseGrid?.DisplayGrid(_application.Grid);
     }
 
     private void CalculateMetrics(object? sender, RoutedEventArgs e)
@@ -159,7 +159,7 @@ public partial class MainWindow : Window
     {
         // Reflect the loaded grid without replacing it through ValueChanged.
         updatingGridSize = true;
-        try { GridSize.Value = _application.grid.GetCells().GetLength(0); }
+        try { GridSize.Value = _application.Grid.GetCells().GetLength(0); }
         finally { updatingGridSize = false; }
     }
 }
