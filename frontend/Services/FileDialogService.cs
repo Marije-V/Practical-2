@@ -22,7 +22,7 @@ public sealed class FileDialogService
     }
 
     // A null result means the user cancelled the dialog.
-    public async Task<TextFile?> OpenText(string title)
+    public async Task<TextFile?> OpenTextAsync(string title)
     {
         var folder = await storageProvider.TryGetFolderFromPathAsync(new Uri(initialDirectory));
         var files = await storageProvider.OpenFilePickerAsync(new FilePickerOpenOptions
@@ -43,7 +43,7 @@ public sealed class FileDialogService
     }
 
     // Returns the saved filename, or null when the user cancels.
-    public async Task<string?> SaveText(string title, string suggestedName, string text)
+    public async Task<string?> SaveTextAsync(string title, string suggestedName, string text)
     {
         var folder = await storageProvider.TryGetFolderFromPathAsync(new Uri(initialDirectory));
         using var file = await storageProvider.SaveFilePickerAsync(new FilePickerSaveOptions

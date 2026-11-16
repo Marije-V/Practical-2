@@ -95,7 +95,7 @@ public partial class MainWindow : Window
     {
         try
         {
-            var file = await _fileDialogs.OpenText("Load program");
+            var file = await _fileDialogs.OpenTextAsync("Load program");
             if (file is null) return;
 
             _application.LoadProgram(file.Name, file.Text);
@@ -109,11 +109,11 @@ public partial class MainWindow : Window
         catch (Exception error) { OutputTextBlock.Text = "Could not load program: " + error.Message; }
     }
 
-    private async void SaveProgram(object? sender, RoutedEventArgs e)
+    private async void SaveProgramAsync(object? sender, RoutedEventArgs e)
     {
         try
         {
-            var fileName = await _fileDialogs.SaveText("Save program", ProgramName.Text ?? "", ProgramTextBox.Text ?? "");
+            var fileName = await _fileDialogs.SaveTextAsync("Save program", ProgramName.Text ?? "", ProgramTextBox.Text ?? "");
             if (fileName is null) return;
 
             ProgramName.Text = System.IO.Path.GetFileNameWithoutExtension(fileName);
@@ -130,11 +130,11 @@ public partial class MainWindow : Window
         DrawGrid();
     }
 
-    private async void LoadExerciseFromFile(object? sender, RoutedEventArgs e)
+    private async void LoadExerciseFromFileAsync(object? sender, RoutedEventArgs e)
     {
         try
         {
-            var file = await _fileDialogs.OpenText("Load exercise");
+            var file = await _fileDialogs.OpenTextAsync("Load exercise");
             if (file is null) return;
 
             _application.LoadExercise(file.Text);
