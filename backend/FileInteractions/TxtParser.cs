@@ -60,26 +60,32 @@ public class TxtParser : IProgramParser
             }
 
             // Now we know that the indention is on the same level and we start the splitting
-            string[] words = _currentTextLine.TrimStart().Split(" ", StringSplitOptions.RemoveEmptyEntries);
+#nullable enable
+            string[] words = _currentTextLine.TrimStart().Split((Char[]?)null, StringSplitOptions.RemoveEmptyEntries);
 
             // Now we read the new line while having the old data. This way if we call a repeat function it still goes to the next line instead of staying on the old one
             AdvanceLine();
 
-            switch (words[0])
+            switch (words[0].ToLowerInvariant())
             {
-                case "Move":
+                case "move":
                     // Parse the amount of steps and make a new move commando
                     commands.Add(new Move(int.Parse(words[1])));
                     break;
-                case "Turn":
+                case "turn":
                     // Make the turn all lowercase so left = left and the rest we just read as right
-                    TurnDirection turn = words[1].ToLower() == "left" ? TurnDirection.Left : TurnDirection.Right;
+                    TurnDirection turn = words[1].ToLowerInvariant() switch
+                    {
+                        "left" => TurnDirection.Left,
+                        "right" => TurnDirection.Right,
+                        _ => throw new FormatException("Expected Turn left or Turn right.")
+                    };
                     commands.Add(new Turn(turn));
                     break;
-                case "RepeatUntil":
+                case "repeatuntil":
                     commands.Add(new RepeatUntil(Enum.Parse<Condition>(words[1]), ParseTextBlock(indent + 1)));
                     break;
-                case "Repeat":
+                case "repeat":
                     // recursion on parseblock(indent + 1) so the children are the list of the repeat.
                     commands.Add(
                         new Repeat(int.Parse(words[1]),

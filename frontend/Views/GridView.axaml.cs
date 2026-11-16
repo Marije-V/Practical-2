@@ -59,7 +59,7 @@ public partial class GridView : UserControl
             }
         }
 
-        // Matches the backend's default starting position.
+        // Matches the backend default starting position.
         DisplayCharacter(0, 0, Direction.East, markVisited: false);
     }
 
